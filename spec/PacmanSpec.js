@@ -28,27 +28,6 @@ describe("When on Startup scene", function () {
 });
 
 describe("Game", function () {
-  describe("#keyPressed", function () {
-    it("should delegate call to scene", function () {
-      var KEY = KEY_ENTER;
-      var game = new Game();
-      var scene = game.getScene();
-      spyOn(scene, 'keyPressed');
-      game.keyPressed(KEY);
-      expect(scene.keyPressed).toHaveBeenCalledWith(KEY);
-    });
-  });
-  
-  describe("#tick", function () {
-    it("should delegate call to scene", function () {
-      var game = new Game();
-      var scene = game.getScene();
-      spyOn(scene, 'tick');
-      game.tick();
-      expect(scene.tick).toHaveBeenCalled();
-    });
-  });
-  
   describe("#draw", function () {
     it("should delegate call to scene", function () {
       var game = new Game();
@@ -79,22 +58,6 @@ describe("PlayScene", function () {
       var pacman = playScene.getPacman();
       expect(pacman.getSpeed()).toBeGreaterThan(0);
       expect(pacman.getDirection()).toBeDefined();
-    });
-  });
-  
-  describe("#tick", function () {
-    it("should delegate call to Ready message", function () {
-      var readyMessage = playScene.getReadyMessage();
-      spyOn(readyMessage, 'tick');
-      playScene.tick();
-      expect(readyMessage.tick).toHaveBeenCalled();
-    });
-    
-    it("should delegate call to Pacman", function () {
-      var pacman = playScene.getPacman();
-      spyOn(pacman, 'tick');
-      playScene.tick();
-      expect(pacman.tick).toHaveBeenCalled();
     });
   });
   
