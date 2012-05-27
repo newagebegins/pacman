@@ -17,19 +17,17 @@ Pacman.prototype.tick = function () {
 };
 
 Pacman.prototype._move = function () {
-  switch (this._requestedDirection) {
-    case DIRECTION_RIGHT:
-      this._x++;
-      break;
-    case DIRECTION_LEFT:
-      this._x--;
-      break;
-    case DIRECTION_UP:
-      this._y--;
-      break;
-    case DIRECTION_DOWN:
-      this._y++;
-      break;
+  if (this._requestedDirection == DIRECTION_RIGHT) {
+    this._x++;
+  }
+  else if (this._requestedDirection == DIRECTION_LEFT) {
+    this._x--;
+  }
+  else if (this._requestedDirection == DIRECTION_UP) {
+    this._y--;
+  }
+  else if (this._requestedDirection == DIRECTION_DOWN) {
+    this._y++;
   }
 };
 
@@ -51,6 +49,21 @@ Pacman.prototype.setSpeed = function (speed) {
 
 Pacman.prototype.getSpeed = function () {
   return this._speed;
+};
+
+Pacman.prototype.keyPressed = function (key) {
+  if (key == KEY_RIGHT) {
+    this.requestNewDirection(DIRECTION_RIGHT);
+  }
+  else if (key == KEY_LEFT) {
+    this.requestNewDirection(DIRECTION_LEFT);
+  }
+  else if (key == KEY_UP) {
+    this.requestNewDirection(DIRECTION_UP);
+  }
+  else if (key == KEY_DOWN) {
+    this.requestNewDirection(DIRECTION_DOWN);
+  }
 };
 
 Pacman.prototype.requestNewDirection = function (direction) {

@@ -20,7 +20,7 @@ PlayScene.prototype.draw = function (ctx) {
 };
 
 PlayScene.prototype.keyPressed = function (key) {
-  
+  this._pacman.keyPressed(key);
 };
 
 PlayScene.prototype.getReadyMessage = function () {

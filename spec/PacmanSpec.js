@@ -203,25 +203,25 @@ describe("Pacman", function () {
   });
   
   it("can move right", function () {
-    pacman.requestNewDirection(DIRECTION_RIGHT);
+    game.keyPressed(KEY_RIGHT);
     game.tick();
     expect(pacman.getPosition()).toEqual({x: INIT_X + SPEED, y: INIT_Y});
   });
   
   it("can move left", function () {
-    pacman.requestNewDirection(DIRECTION_LEFT);
+    game.keyPressed(KEY_LEFT);
     game.tick();
     expect(pacman.getPosition()).toEqual({x: INIT_X - SPEED, y: INIT_Y});
   });
   
   it("can move up", function () {
-    pacman.requestNewDirection(DIRECTION_UP);
+    game.keyPressed(KEY_UP);
     game.tick();
     expect(pacman.getPosition()).toEqual({x: INIT_X, y: INIT_Y - SPEED});
   });
   
   it("can move down", function () {
-    pacman.requestNewDirection(DIRECTION_DOWN);
+    game.keyPressed(KEY_DOWN);
     game.tick();
     expect(pacman.getPosition()).toEqual({x: INIT_X, y: INIT_Y + SPEED});
   });
