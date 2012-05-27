@@ -73,6 +73,13 @@ describe("PlayScene", function () {
       playScene.tick();
       expect(readyMessage.tick).toHaveBeenCalled();
     });
+    
+    it("should delegate call to Pacman", function () {
+      var pacman = playScene.getPacman();
+      spyOn(pacman, 'tick');
+      playScene.tick();
+      expect(pacman.tick).toHaveBeenCalled();
+    });
   });
 });
 
@@ -107,5 +114,31 @@ describe("When Play scene is just started", function () {
     
     expect(readyMessage.isVisible()).toBeFalsy();
     expect(readyMessage.getTimeToHide()).toEqual(0);
+  });
+});
+
+describe("When on Play scene and Ready message is visible", function () {
+  it("Pacman should not move until Ready message is hidden", function () {
+    var VISIBILITY_DURATION = 2;
+    var game = new Game();
+    var playScene = new PlayScene(game);
+    game.setScene(playScene);
+    var pacman = playScene.getPacman();
+    var readyMessage = playScene.getReadyMessage();
+    readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
+    var initialPosition = pacman.getPosition();
+    
+    expect(readyMessage.isVisible()).toBeTruthy();
+    expect(pacman.getPosition()).toEqual(initialPosition);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeTruthy();
+    expect(pacman.getPosition()).toEqual(initialPosition);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeFalsy();
+    expect(pacman.getPosition()).not.toEqual(initialPosition);
   });
 });
