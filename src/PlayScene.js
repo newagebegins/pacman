@@ -12,6 +12,8 @@ function PlayScene(game) {
   
   this._currentLevel = 1;
   this.loadMap(this._getMapForCurrentLevel());
+  
+  this._score = 0;
 }
 
 PlayScene.prototype.tick = function () {
@@ -26,6 +28,21 @@ PlayScene.prototype.draw = function (ctx) {
   for (var wall in this._walls) {
     this._walls[wall].draw(ctx);
   }
+  
+  for (var pellet in this._pellets) {
+    this._pellets[pellet].draw(ctx);
+  }
+  
+  this._drawScore(ctx);
+};
+
+PlayScene.prototype._drawScore = function (ctx) {
+  var SCORE_X = 0;
+  var SCORE_Y = 200;
+  ctx.fillStyle = "red";
+  ctx.font = "bold 14px 'Lucida Console', Monaco, monospace"
+  var text = "SCORE: " + this._score;
+  ctx.fillText(text, SCORE_X, SCORE_Y);
 };
 
 PlayScene.prototype.keyPressed = function (key) {
@@ -42,6 +59,7 @@ PlayScene.prototype.getPacman = function () {
 
 PlayScene.prototype.loadMap = function (map) {
   this._walls = [];
+  this._pellets = [];
   for (var row = 0; row < map.length; ++row) {
     for (var col = 0; col < map[row].length; ++col) {
       var tile = map[row][col];
@@ -50,6 +68,13 @@ PlayScene.prototype.loadMap = function (map) {
         var wall = new Wall();
         wall.setPosition(position);
         this._walls.push(wall);
+      }
+      else if (tile == '.') {
+        var pellet = new Pellet();
+        position.x += (TILE_SIZE - NORMAL_PELLET_SIZE) / 2 + 1;
+        position.y += (TILE_SIZE - NORMAL_PELLET_SIZE) / 2 + 1;
+        pellet.setPosition(position);
+        this._pellets.push(pellet);
       }
       else if (tile == 'C') {
         this._pacmanStartPosition = position;
@@ -63,12 +88,33 @@ PlayScene.prototype.getWalls = function () {
   return this._walls;
 };
 
+PlayScene.prototype.getPellets = function () {
+  return this._pellets;
+};
+
+PlayScene.prototype.removePellet = function (pellet) {
+  for (var i = 0; i < this._pellets.length; ++i) {
+    if (this._pellets[i] === pellet) {
+      this._pellets.splice(i, 1);
+      return;
+    }
+  }
+};
+
 PlayScene.prototype.getPacmanStartPosition = function () {
   return this._pacmanStartPosition;
 };
 
 PlayScene.prototype.getCurrentLevel = function () {
   return this._currentLevel;
+};
+
+PlayScene.prototype.getScore = function () {
+  return this._score;
+};
+
+PlayScene.prototype.increaseScore = function (amount) {
+  this._score += amount;
 };
 
 PlayScene.prototype._getMapForCurrentLevel = function () {
@@ -81,7 +127,7 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '# #### # # #   # # # #### # #',
              '#        # ##### #          #',
              '# ######## ##### ########## #',
-             '#C                          #',
+             '#C  ................        #',
              '#############################'];
   }
 };
