@@ -31,6 +31,11 @@ Pacman.prototype._move = function () {
   }
 };
 
+Pacman.prototype.setPosition = function (position) {
+  this._x = position.x;
+  this._y = position.y;
+};
+
 Pacman.prototype.getPosition = function () {
   return {x: this._x, y: this._y};
 };
@@ -75,7 +80,6 @@ Pacman.prototype.getDirection = function () {
 };
 
 Pacman.prototype.draw = function (ctx) {
-  var SIZE = 10;
   ctx.fillStyle = "yellow";
-  ctx.fillRect(this._x, this._y, SIZE, SIZE);
+  ctx.fillRect(this._x, this._y, TILE_SIZE, TILE_SIZE);
 };

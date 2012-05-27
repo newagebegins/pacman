@@ -54,6 +54,7 @@ describe("PlayScene", function () {
       var readyMessage = playScene.getReadyMessage();
       expect(readyMessage.getTimeToHide()).toBeGreaterThan(0);
     });
+    
     it("should initialize Pacman", function () {
       var pacman = playScene.getPacman();
       expect(pacman.getSpeed()).toBeGreaterThan(0);
@@ -61,30 +62,38 @@ describe("PlayScene", function () {
     });
   });
   
-  describe("#draw", function () {
-    it("should delegate call", function () {
-      var ctx = {};
+  describe("#loadMap", function () {
+    it("sample map", function () {
+      var map = ['###',
+                 '#C#',
+                 '###'];
+      playScene.loadMap(map);
+      var walls = playScene.getWalls();
       
-      var readyMessage = playScene.getReadyMessage();
-      spyOn(readyMessage, 'draw');
+      expect(walls.length).toEqual(8);
       
-      var pacman = playScene.getPacman();
-      spyOn(pacman, 'draw');
+      expect(walls[0].getPosition()).toEqual({x: 0, y: 0});
+      expect(walls[1].getPosition()).toEqual({x: TILE_SIZE, y: 0});
+      expect(walls[2].getPosition()).toEqual({x: TILE_SIZE * 2, y: 0});
+      expect(walls[3].getPosition()).toEqual({x: 0, y: TILE_SIZE});
+      expect(walls[4].getPosition()).toEqual({x: TILE_SIZE * 2, y: TILE_SIZE});
       
-      playScene.draw(ctx);
-      
-      expect(readyMessage.draw).toHaveBeenCalledWith(ctx);
-      expect(pacman.draw).toHaveBeenCalledWith(ctx);
+      expect(playScene.getPacmanStartPosition()).toEqual({x: TILE_SIZE, y: TILE_SIZE});
     });
   });
 });
 
 describe("When Play scene is just started", function () {
+  var game, playScene;
+  
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+  });
+  
   it("Ready message should be visible for a certain amount of time", function () {
     var VISIBILITY_DURATION = 3;
-    var game = new Game();
-    var playScene = new PlayScene(game);
-    game.setScene(playScene);
     var readyMessage = playScene.getReadyMessage();
     readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
     
@@ -110,6 +119,15 @@ describe("When Play scene is just started", function () {
     
     expect(readyMessage.isVisible()).toBeFalsy();
     expect(readyMessage.getTimeToHide()).toEqual(0);
+  });
+  
+  it("first level should be loaded", function () {
+    expect(playScene.getCurrentLevel()).toEqual(1);
+    expect(playScene.getWalls().length).toBeGreaterThan(0);
+  });
+  
+  it("Pacman should be on the start position", function () {
+    expect(playScene.getPacman().getPosition()).toEqual(playScene.getPacmanStartPosition());
   });
 });
 
