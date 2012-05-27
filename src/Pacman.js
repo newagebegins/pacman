@@ -60,3 +60,9 @@ Pacman.prototype.requestNewDirection = function (direction) {
 Pacman.prototype.getDirection = function () {
   return this._requestedDirection;
 };
+
+Pacman.prototype.draw = function (ctx) {
+  var SIZE = 10;
+  ctx.fillStyle = "yellow";
+  ctx.fillRect(this._x, this._y, SIZE, SIZE);
+};

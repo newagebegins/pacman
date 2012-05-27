@@ -2,7 +2,7 @@ function PlayScene(game) {
   this._game = game;
   
   this._readyMessage = new ReadyMessage();
-  this._readyMessage.setVisibilityDuration(100);
+  this._readyMessage.setVisibilityDuration(50);
   
   this._pacman = new Pacman(this);
   this._pacman.setSpeed(1);
@@ -15,7 +15,8 @@ PlayScene.prototype.tick = function () {
 };
 
 PlayScene.prototype.draw = function (ctx) {
-  
+  this._readyMessage.draw(ctx);
+  this._pacman.draw(ctx);
 };
 
 PlayScene.prototype.keyPressed = function (key) {

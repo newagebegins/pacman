@@ -34,6 +34,6 @@ GameRunner.prototype._gameLoop = function () {
 };
 
 GameRunner.prototype._clearCanvas = function () {
-  this._ctx.fillStyle = "rgb(0,0,0)";
+  this._ctx.fillStyle = "black";
   this._ctx.fillRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
 };

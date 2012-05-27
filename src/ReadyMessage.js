@@ -21,3 +21,18 @@ ReadyMessage.prototype.tick = function () {
     this._timeToHide--;
   }
 };
+
+ReadyMessage.prototype.draw = function (ctx) {
+  if (!this.isVisible()) {
+    return;
+  }
+  
+  ctx.fillStyle = "red";
+  ctx.font = "bold 18px 'Lucida Console', Monaco, monospace"
+  var text = "READY";
+  var textWidth = ctx.measureText(text).width;
+  // Draw text in the center of the canvas.
+  var x = ctx.canvas.width / 2 - textWidth / 2;
+  var y = ctx.canvas.height / 2;
+  ctx.fillText(text, x, y);
+};

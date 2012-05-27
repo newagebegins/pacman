@@ -97,6 +97,23 @@ describe("PlayScene", function () {
       expect(pacman.tick).toHaveBeenCalled();
     });
   });
+  
+  describe("#draw", function () {
+    it("should delegate call", function () {
+      var ctx = {};
+      
+      var readyMessage = playScene.getReadyMessage();
+      spyOn(readyMessage, 'draw');
+      
+      var pacman = playScene.getPacman();
+      spyOn(pacman, 'draw');
+      
+      playScene.draw(ctx);
+      
+      expect(readyMessage.draw).toHaveBeenCalledWith(ctx);
+      expect(pacman.draw).toHaveBeenCalledWith(ctx);
+    });
+  });
 });
 
 describe("When Play scene is just started", function () {

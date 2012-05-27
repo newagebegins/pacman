@@ -17,7 +17,7 @@ StartupScene.prototype.draw = function (ctx) {
 };
 
 StartupScene.prototype._drawText = function (ctx) {
-  ctx.fillStyle = "rgb(255,0,0)";
+  ctx.fillStyle = "red";
   ctx.font = "bold 18px 'Lucida Console', Monaco, monospace"
   var text = "PRESS ENTER";
   var textWidth = ctx.measureText(text).width;
