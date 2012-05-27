@@ -7,3 +7,7 @@ StartupScene.prototype.keyPressed = function (key) {
     this._game.setScene(new PlayScene(this._game));
   }
 };
+
+StartupScene.prototype.tick = function () {
+  
+};

@@ -16,3 +16,7 @@ Game.prototype.getScene = function () {
 Game.prototype.keyPressed = function (key) {
   this._scene.keyPressed(key);
 };
+
+Game.prototype.tick = function () {
+  this._scene.tick();
+};

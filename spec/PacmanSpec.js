@@ -38,14 +38,74 @@ describe("Game", function () {
       expect(scene.keyPressed).toHaveBeenCalledWith(KEY);
     });
   });
+  
+  describe("#tick", function () {
+    it("should delegate call to scene", function () {
+      var game = new Game();
+      var scene = game.getScene();
+      spyOn(scene, 'tick');
+      game.tick();
+      expect(scene.tick).toHaveBeenCalled();
+    });
+  });
+});
+
+describe("PlayScene", function () {
+  var game, playScene;
+  
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+  });
+  
+  describe("constructor", function () {
+    it("should initialize Ready message", function () {
+      var readyMessage = playScene.getReadyMessage();
+      expect(readyMessage.getTimeToHide()).toBeGreaterThan(0);
+    });
+  });
+  
+  describe("#tick", function () {
+    it("should delegate call to Ready message", function () {
+      var readyMessage = playScene.getReadyMessage();
+      spyOn(readyMessage, 'tick');
+      playScene.tick();
+      expect(readyMessage.tick).toHaveBeenCalled();
+    });
+  });
 });
 
 describe("When Play scene is just started", function () {
-  it("Ready message should be visible", function () {
+  it("Ready message should be visible for a certain amount of time", function () {
+    var VISIBILITY_DURATION = 3;
     var game = new Game();
     var playScene = new PlayScene(game);
     game.setScene(playScene);
     var readyMessage = playScene.getReadyMessage();
+    readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
+    
     expect(readyMessage.isVisible()).toBeTruthy();
+    expect(readyMessage.getTimeToHide()).toEqual(VISIBILITY_DURATION);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeTruthy();
+    expect(readyMessage.getTimeToHide()).toEqual(VISIBILITY_DURATION - 1);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeTruthy();
+    expect(readyMessage.getTimeToHide()).toEqual(VISIBILITY_DURATION - 2);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeFalsy();
+    expect(readyMessage.getTimeToHide()).toEqual(0);
+    
+    game.tick();
+    
+    expect(readyMessage.isVisible()).toBeFalsy();
+    expect(readyMessage.getTimeToHide()).toEqual(0);
   });
 });
