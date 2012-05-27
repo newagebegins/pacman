@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pacman</title>
+  
+  <script type="text/javascript" src="src/Game.js"></script>
+  <script type="text/javascript" src="src/StartupScene.js"></script>
+  <script type="text/javascript" src="src/PlayScene.js"></script>
+  <script type="text/javascript" src="src/ReadyMessage.js"></script>
+  <script type="text/javascript" src="src/Pacman.js"></script>
+  
+  <script type="text/javascript" src="lib/Stats.js"></script>
+  <script type="text/javascript" src="src/FPSCounter.js"></script>
+  
+  <script type="text/javascript">
+    window.onload = function () {
+      var FPS = 30;
+      
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+      var fpsCounter = new FPSCounter();
+      
+      var game = new Game();
+      
+      function tick() {
+        fpsCounter.begin();
+        
+        game.tick();
+        game.draw(ctx);
+        
+        fpsCounter.end();
+      }
+      
+      setInterval(tick, 1000 / FPS);
+    };
+  </script>
+</head>
+
+<body>
+  <canvas id="canvas" width="400" height="300"></canvas>
+</body>
+</html>

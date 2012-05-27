@@ -20,3 +20,7 @@ Game.prototype.keyPressed = function (key) {
 Game.prototype.tick = function () {
   this._scene.tick();
 };
+
+Game.prototype.draw = function (surface) {
+  this._scene.draw(surface);
+};
