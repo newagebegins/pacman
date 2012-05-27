@@ -13,18 +13,12 @@ StartupScene.prototype.tick = function () {
 };
 
 StartupScene.prototype.draw = function (ctx) {
-  this._clearCanvas(ctx);
   this._drawText(ctx);
-};
-
-StartupScene.prototype._clearCanvas = function (ctx) {
-  ctx.fillStyle = "rgb(0,0,0)";
-  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 };
 
 StartupScene.prototype._drawText = function (ctx) {
   ctx.fillStyle = "rgb(255,0,0)";
-  ctx.font = "bold 14px Verdana, Geneva, sans-serif"
+  ctx.font = "bold 18px 'Lucida Console', Monaco, monospace"
   var text = "PRESS ENTER";
   var textWidth = ctx.measureText(text).width;
   // Draw text in the center of the canvas.

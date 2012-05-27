@@ -1,6 +1,3 @@
-var KEY_ENTER = 1;
-var KEY_UP = 2;
-
 function Game() {
   this._scene = new StartupScene(this);
 }
