@@ -16,6 +16,10 @@ Keyboard.prototype._listen = function () {
     that._keys[event.which] = true;
     event.preventDefault();
   });
+  $(document).keyup(function (event) {
+    that._keys[event.which] = false;
+    event.preventDefault();
+  });
 };
 
 Keyboard.prototype.handleKeypresses = function () {
@@ -24,5 +28,4 @@ Keyboard.prototype.handleKeypresses = function () {
       this._game.keyPressed(key);
     }
   }
-  this._keys = [];
 };

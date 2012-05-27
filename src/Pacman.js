@@ -21,17 +21,20 @@ Pacman.prototype.getCurrentSpeed = function () {
 };
 
 Pacman.prototype.requestNewDirection = function (direction) {
-  this._requestedDirection = direction;
+  if (this._willCollideWithWallIfMovedInDirection(direction)) {
+    return;
+  }
+  this._direction = direction;
   this._currentSpeed = this._speed;
 };
 
 Pacman.prototype.getDirection = function () {
-  return this._requestedDirection;
+  return this._direction;
 };
 
 Pacman.prototype.tick = function () {
   if (!this._scene.getReadyMessage().isVisible()) {
-    this._move();
+    this._move(this._direction);
     this._handleCollisionsWithWalls();
   }
 };
@@ -51,30 +54,48 @@ Pacman.prototype.keyPressed = function (key) {
   }
 };
 
-Pacman.prototype._move = function () {
-  if (this._requestedDirection == DIRECTION_RIGHT) {
+Pacman.prototype._move = function (direction) {
+  if (direction == DIRECTION_RIGHT) {
     this._rect.move({x: this._currentSpeed, y: 0});
   }
-  else if (this._requestedDirection == DIRECTION_LEFT) {
+  else if (direction == DIRECTION_LEFT) {
     this._rect.move({x: -this._currentSpeed, y: 0});
   }
-  else if (this._requestedDirection == DIRECTION_UP) {
+  else if (direction == DIRECTION_UP) {
     this._rect.move({x: 0, y: -this._currentSpeed});
   }
-  else if (this._requestedDirection == DIRECTION_DOWN) {
+  else if (direction == DIRECTION_DOWN) {
     this._rect.move({x: 0, y: this._currentSpeed});
   }
 };
 
+Pacman.prototype._willCollideWithWallIfMovedInDirection = function (direction) {
+  var result = false;
+  var currentPosition = this.getPosition();
+  this._move(direction);
+  if (this._getTouchedWall() != null) {
+    result = true;
+  }
+  this.setPosition(currentPosition);
+  return result;
+};
+
 Pacman.prototype._handleCollisionsWithWalls = function () {
+  var touchedWall = this._getTouchedWall();
+  if (touchedWall != null) {
+    this._resolveCollisionWithWall(touchedWall);
+    this._currentSpeed = 0;
+  }
+};
+
+Pacman.prototype._getTouchedWall = function () {
   var walls = this._scene.getWalls();
   for (var wall in walls) {
     if (this._collidedWithWall(walls[wall])) {
-      this._resolveCollisionWithWall(walls[wall]);
-      this._currentSpeed = 0;
-      return;
+      return walls[wall];
     }
   }
+  return null;
 };
 
 Pacman.prototype._collidedWithWall = function (wall) {
@@ -84,16 +105,16 @@ Pacman.prototype._collidedWithWall = function (wall) {
 Pacman.prototype._resolveCollisionWithWall = function (wall) {
   var moveX = 0;
   var moveY = 0;
-  if (this._requestedDirection == DIRECTION_RIGHT) {
+  if (this._direction == DIRECTION_RIGHT) {
     moveX = this.getRight() - wall.getLeft() + 1;
   }
-  else if (this._requestedDirection == DIRECTION_LEFT) {
+  else if (this._direction == DIRECTION_LEFT) {
     moveX = this.getLeft() - wall.getRight() - 1;
   }
-  else if (this._requestedDirection == DIRECTION_UP) {
+  else if (this._direction == DIRECTION_UP) {
     moveY = this.getTop() - wall.getBottom() - 1;
   }
-  else if (this._requestedDirection == DIRECTION_DOWN) {
+  else if (this._direction == DIRECTION_DOWN) {
     moveY = this.getBottom() - wall.getTop() + 1;
   }
   this._rect.move({x: -moveX, y: -moveY});

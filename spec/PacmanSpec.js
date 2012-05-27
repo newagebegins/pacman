@@ -287,3 +287,36 @@ describe("When Pacman is collided with wall and stopped and then is given a new 
     expect(pacman.getCurrentSpeed()).toEqual(SPEED);
   });
 });
+
+describe("When Pacman is moving and is given a command to change direction", function () {
+  describe("and this direction is blocked by a wall", function () {
+    it("Pacman's current direction shouldn't change", function () {
+      var SPEED = 2;
+      var game = new Game();
+      var playScene = new PlayScene(game);
+      game.setScene(playScene);
+      var map = ['#####',
+                 '## ##',
+                 '#  C#',
+                 '## ##',
+                 '#####'];
+      playScene.loadMap(map);
+      playScene.getReadyMessage().hide();
+      var pacman = playScene.getPacman();
+      pacman.setSpeed(SPEED);
+      var INIT_POS = pacman.getPosition();
+
+      game.keyPressed(KEY_LEFT);
+      game.tick();
+      expect(pacman.getCurrentSpeed()).toEqual(SPEED);
+      expect(pacman.getDirection()).toEqual(DIRECTION_LEFT);
+      expect(pacman.getPosition()).toEqual({x: INIT_POS.x - SPEED, y: INIT_POS.y});
+
+      game.keyPressed(KEY_DOWN);
+      game.tick();
+      expect(pacman.getCurrentSpeed()).toEqual(SPEED);
+      expect(pacman.getDirection()).toEqual(DIRECTION_LEFT);
+      expect(pacman.getPosition()).toEqual({x: INIT_POS.x - SPEED * 2, y: INIT_POS.y});
+    });
+  });
+});
