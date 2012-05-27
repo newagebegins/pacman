@@ -5,6 +5,8 @@ function PlayScene(game) {
   this._readyMessage.setVisibilityDuration(100);
   
   this._pacman = new Pacman(this);
+  this._pacman.setSpeed(1);
+  this._pacman.requestNewDirection(DIRECTION_RIGHT);
 }
 
 PlayScene.prototype.tick = function () {
