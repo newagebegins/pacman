@@ -7,12 +7,11 @@ function PlayScene(game) {
   this._readyMessage.setVisibilityDuration(50);
   
   this._pacman = new Pacman(this);
-  this._pacman.setSpeed(1);
+  this._pacman.setSpeed(2);
   this._pacman.requestNewDirection(DIRECTION_RIGHT);
   
   this._currentLevel = 1;
   this.loadMap(this._getMapForCurrentLevel());
-  this._pacman.setPosition(this._pacmanStartPosition);
 }
 
 PlayScene.prototype.tick = function () {
@@ -54,6 +53,7 @@ PlayScene.prototype.loadMap = function (map) {
       }
       else if (tile == 'C') {
         this._pacmanStartPosition = position;
+        this._pacman.setPosition(this._pacmanStartPosition);
       }
     }
   }
@@ -73,8 +73,15 @@ PlayScene.prototype.getCurrentLevel = function () {
 
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
-    return ['###',
-            '#C#',
-            '###']
+    return  ['#############################',
+             '#                           #',
+             '# #### ###### ###### #### # #',
+             '# #  # #           # #  # # #',
+             '# #  # # # ## ## # # #  # # #',
+             '# #### # # #   # # # #### # #',
+             '#        # ##### #          #',
+             '# ######## ##### ########## #',
+             '#C                          #',
+             '#############################'];
   }
 };

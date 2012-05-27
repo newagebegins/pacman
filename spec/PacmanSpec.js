@@ -57,7 +57,7 @@ describe("PlayScene", function () {
     
     it("should initialize Pacman", function () {
       var pacman = playScene.getPacman();
-      expect(pacman.getSpeed()).toBeGreaterThan(0);
+      expect(pacman.getCurrentSpeed()).toBeGreaterThan(0);
       expect(pacman.getDirection()).toBeDefined();
     });
   });
@@ -137,6 +137,12 @@ describe("When on Play scene and Ready message is visible", function () {
     var game = new Game();
     var playScene = new PlayScene(game);
     game.setScene(playScene);
+    var map = ['#####',
+               '## ##',
+               '# C #',
+               '## ##',
+               '#####'];
+    playScene.loadMap(map);
     var pacman = playScene.getPacman();
     var readyMessage = playScene.getReadyMessage();
     readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
@@ -170,17 +176,24 @@ describe("ReadyMessage", function () {
 });
 
 describe("Pacman", function () {
-  var game, playScene, pacman, INIT_X, INIT_Y, SPEED;
+  var SPEED = 2;
+  var game, playScene, pacman, INIT_X, INIT_Y;
   
   beforeEach(function () {
     game = new Game();
     playScene = new PlayScene(game);
     game.setScene(playScene);
+    var map = ['#####',
+               '## ##',
+               '# C #',
+               '## ##',
+               '#####'];
+    playScene.loadMap(map);
     playScene.getReadyMessage().hide();
     pacman = playScene.getPacman();
+    pacman.setSpeed(SPEED);
     INIT_X = pacman.getX();
     INIT_Y = pacman.getY();
-    SPEED = pacman.getSpeed();
   });
   
   it("can move right", function () {
@@ -205,5 +218,72 @@ describe("Pacman", function () {
     game.keyPressed(KEY_DOWN);
     game.tick();
     expect(pacman.getPosition()).toEqual({x: INIT_X, y: INIT_Y + SPEED});
+  });
+});
+
+describe("Pacman shouldn't move through the walls", function () {
+  var map = ['###',
+              '#C#',
+              '###'];
+  var game, playScene, pacman, INITIAL_POS;
+
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+    pacman = playScene.getPacman();
+    INITIAL_POS = pacman.getPosition();
+  });
+
+  it("when moving right", function () {
+    checkDirection(KEY_RIGHT);
+  });
+
+  it("when moving left", function () {
+    checkDirection(KEY_LEFT);
+  });
+
+  it("when moving up", function () {
+    checkDirection(KEY_UP);
+  });
+
+  it("when moving down", function () {
+    checkDirection(KEY_DOWN);
+  });
+
+  function checkDirection(directionKey) {
+    game.keyPressed(directionKey);
+    expect(pacman.getCurrentSpeed()).toBeGreaterThan(0);
+    game.tick();
+    expect(pacman.getCurrentSpeed()).toEqual(0);
+    expect(pacman.getPosition()).toEqual(INITIAL_POS);
+  }
+});
+
+describe("When Pacman is collided with wall and stopped and then is given a new direction", function () {
+  it("Pacman should regain its speed", function () {
+    var SPEED = 2;
+    var game = new Game();
+    var playScene = new PlayScene(game);
+    game.setScene(playScene);
+    var map = ['#####',
+               '## ##',
+               '#  C#',
+               '## ##',
+               '#####'];
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+    var pacman = playScene.getPacman();
+    pacman.setSpeed(SPEED);
+    
+    game.keyPressed(KEY_RIGHT);
+    game.tick();
+    expect(pacman.getCurrentSpeed()).toEqual(0);
+    
+    game.keyPressed(KEY_LEFT);
+    game.tick();
+    expect(pacman.getCurrentSpeed()).toEqual(SPEED);
   });
 });
