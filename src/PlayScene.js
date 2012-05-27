@@ -33,6 +33,7 @@ PlayScene.prototype.draw = function (ctx) {
     this._pellets[pellet].draw(ctx);
   }
   
+  this._gate.draw(ctx);
   this._drawScore(ctx);
 };
 
@@ -76,6 +77,12 @@ PlayScene.prototype.loadMap = function (map) {
         pellet.setPosition(position);
         this._pellets.push(pellet);
       }
+      else if (tile == '-') {
+        var gate = new Gate();
+        position.y += (TILE_SIZE - GATE_HEIGHT) / 2 + 1;
+        gate.setPosition(position);
+        this._gate = gate;
+      }
       else if (tile == 'C') {
         this._pacmanStartPosition = position;
         this._pacman.setPosition(this._pacmanStartPosition);
@@ -105,6 +112,10 @@ PlayScene.prototype.getPacmanStartPosition = function () {
   return this._pacmanStartPosition;
 };
 
+PlayScene.prototype.getGate = function () {
+  return this._gate;
+};
+
 PlayScene.prototype.getCurrentLevel = function () {
   return this._currentLevel;
 };
@@ -123,11 +134,12 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '#                           #',
              '# #### ###### ###### #### # #',
              '# #  # #           # #  # # #',
-             '# #  # # # ## ## # # #  # # #',
+             '# #  # # # ##-## # # #  # # #',
              '# #### # # #   # # # #### # #',
              '#        # ##### #          #',
              '# ######## ##### ########## #',
              '#C  ................        #',
              '#############################'];
   }
+  return [];
 };

@@ -64,9 +64,9 @@ describe("PlayScene", function () {
   
   describe("#loadMap", function () {
     it("sample map", function () {
-      var map = ['# .',
-                 '#C#',
-                 '##.'];
+      var map = ['# .-',
+                 '#C# ',
+                 '##. '];
       playScene.loadMap(map);
       
       var walls = playScene.getWalls();
@@ -79,6 +79,8 @@ describe("PlayScene", function () {
       
       var pellets = playScene.getPellets();
       expect(pellets.length).toEqual(2);
+      
+      expect(playScene.getGate() instanceof Gate).toBeTruthy();
     });
   });
 });
