@@ -27,8 +27,41 @@ Ghost.prototype.tick = function () {
   if (this._scene.getReadyMessage().isVisible()) {
     return;
   }
+  this._tryTurnCorner();
   this._sprite.move(this.getDirection());
   this._handleCollisionsWithWalls();
+};
+
+Ghost.prototype._tryTurnCorner = function () {
+  if (getRandomInt(0, 1)) {
+    return;
+  }
+  var possibleTurns = this._getPossibleTurns();
+  if (possibleTurns.length == 0) {
+    return;
+  }
+  this._sprite.setDirection(getRandomElementFromArray(possibleTurns));
+};
+
+Ghost.prototype._getPossibleTurns = function () {
+  var result = [];
+  if (this.getDirection() == DIRECTION_LEFT || this.getDirection() == DIRECTION_RIGHT) {
+    if (!this._sprite.willCollideWithWallIfMovedInDirection(DIRECTION_UP)) {
+      result.push(DIRECTION_UP);
+    }
+    if (!this._sprite.willCollideWithWallIfMovedInDirection(DIRECTION_DOWN)) {
+      result.push(DIRECTION_DOWN);
+    }
+  }
+  else {
+    if (!this._sprite.willCollideWithWallIfMovedInDirection(DIRECTION_LEFT)) {
+      result.push(DIRECTION_LEFT);
+    }
+    if (!this._sprite.willCollideWithWallIfMovedInDirection(DIRECTION_RIGHT)) {
+      result.push(DIRECTION_RIGHT);
+    }
+  }
+  return result;
 };
 
 Ghost.prototype._handleCollisionsWithWalls = function () {
