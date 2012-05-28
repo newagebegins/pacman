@@ -24,10 +24,11 @@ Ghost.prototype.getStartPosition = function () {
 };
 
 Ghost.prototype.tick = function () {
-  if (!this._scene.getReadyMessage().isVisible()) {
-    this._sprite.move(this._sprite.getDirection());
-    this._handleCollisionsWithWalls();
+  if (this._scene.getReadyMessage().isVisible()) {
+    return;
   }
+  this._sprite.move(this.getDirection());
+  this._handleCollisionsWithWalls();
 };
 
 Ghost.prototype._handleCollisionsWithWalls = function () {
@@ -51,7 +52,7 @@ Ghost.prototype.getDirectionsNotBlockedByWall = function () {
 
 Ghost.prototype.setRandomDirectionNotBlockedByWall = function () {
   var directions = this.getDirectionsNotBlockedByWall();
-  this._sprite.setDirection(directions[Math.floor(Math.random() * directions.length)]);
+  this._sprite.setDirection(getRandomElementFromArray(directions));
 };
 
 Ghost.prototype.draw = function (ctx) {

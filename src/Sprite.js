@@ -100,6 +100,7 @@ Sprite.prototype.collidedWith = function (other) {
   return this._rect.intersectsRect(other.getRect());
 };
 
+
 /*--------------------------- Rect delegation --------------------------------*/
 
 Sprite.prototype.setPosition = function (position) {
