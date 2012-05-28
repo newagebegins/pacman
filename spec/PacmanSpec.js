@@ -151,34 +151,52 @@ describe("When Play scene is just started", function () {
 });
 
 describe("When on Play scene and Ready message is visible", function () {
+  var game, playScene;
+  
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+  });
+  
   it("Pacman should not move until Ready message is hidden", function () {
     var VISIBILITY_DURATION = 2;
-    var game = new Game();
-    var playScene = new PlayScene(game);
-    game.setScene(playScene);
-    var map = ['#####',
-               '## ##',
-               '# C #',
-               '## ##',
-               '#####'];
-    playScene.loadMap(map);
     var pacman = playScene.getPacman();
     var readyMessage = playScene.getReadyMessage();
     readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
-    var initialPosition = pacman.getPosition();
     
     expect(readyMessage.isVisible()).toBeTruthy();
-    expect(pacman.getPosition()).toEqual(initialPosition);
+    expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
     
     game.tick();
     
     expect(readyMessage.isVisible()).toBeTruthy();
-    expect(pacman.getPosition()).toEqual(initialPosition);
+    expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
     
     game.tick();
     
     expect(readyMessage.isVisible()).toBeFalsy();
-    expect(pacman.getPosition()).not.toEqual(initialPosition);
+    expect(pacman.getPosition()).not.toEqual(pacman.getStartPosition());
+  });
+  
+  it("Ghosts should not move until Ready message is hidden", function () {
+    game.tick();
+    var ghosts = playScene.getGhosts();
+    expect(ghosts[0].getPosition()).toEqual(ghosts[0].getStartPosition());
+  });
+});
+
+describe("When on Play scene and Ready message is hidden", function () {
+  it("Ghosts should move", function () {
+    var game = new Game();
+    var playScene = new PlayScene(game);
+    game.setScene(playScene);
+    playScene.getReadyMessage().hide();
+    
+    game.tick();
+    
+    var ghost = playScene.getGhosts()[0];
+    expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
   });
 });
 

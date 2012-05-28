@@ -3,8 +3,9 @@ var GHOST_PINKY = 'pinky';
 var GHOST_INKY = 'inky';
 var GHOST_CLYDE = 'clyde';
 
-function Ghost(name) {
+function Ghost(name, scene) {
   this._name = name;
+  this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
 }
 
@@ -22,6 +23,12 @@ Ghost.prototype.setStartPosition = function (position) {
 
 Ghost.prototype.getStartPosition = function () {
   return this._startPosition;
+};
+
+Ghost.prototype.tick = function () {
+  if (!this._scene.getReadyMessage().isVisible()) {
+    this._rect.move({x: 1, y: 0});
+  }
 };
 
 Ghost.prototype.draw = function (ctx) {

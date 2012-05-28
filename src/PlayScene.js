@@ -19,6 +19,10 @@ function PlayScene(game) {
 PlayScene.prototype.tick = function () {
   this._readyMessage.tick();
   this._pacman.tick();
+  
+  for (var ghost in this._ghosts) {
+    this._ghosts[ghost].tick();
+  }
 };
 
 PlayScene.prototype.draw = function (ctx) {
@@ -108,7 +112,7 @@ PlayScene.prototype.loadMap = function (map) {
         else if (tile == '4') {
           name = GHOST_CLYDE;
         }
-        var ghost = new Ghost(name);
+        var ghost = new Ghost(name, this);
         ghost.setPosition(position);
         ghost.setStartPosition(position);
         this._ghosts.push(ghost);
