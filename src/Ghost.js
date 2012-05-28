@@ -16,6 +16,14 @@ Ghost.prototype.getRect = function () {
   return this._rect;
 };
 
+Ghost.prototype.setStartPosition = function (position) {
+  this._startPosition = position;
+};
+
+Ghost.prototype.getStartPosition = function () {
+  return this._startPosition;
+};
+
 Ghost.prototype.draw = function (ctx) {
   if (this._name == GHOST_BLINKY) {
     ctx.fillStyle = "#ff0000";

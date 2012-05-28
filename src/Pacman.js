@@ -12,6 +12,14 @@ Pacman.prototype.getRect = function () {
   return this._rect;
 };
 
+Pacman.prototype.setStartPosition = function (position) {
+  this._startPosition = position;
+};
+
+Pacman.prototype.getStartPosition = function () {
+  return this._startPosition;
+};
+
 Pacman.prototype.setSpeed = function (speed) {
   this._speed = speed;
 };

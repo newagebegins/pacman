@@ -91,8 +91,8 @@ PlayScene.prototype.loadMap = function (map) {
         this._gate = gate;
       }
       else if (tile == 'C') {
-        this._pacmanStartPosition = position;
-        this._pacman.setPosition(this._pacmanStartPosition);
+        this._pacman.setStartPosition(position);
+        this._pacman.setPosition(position);
       }
       else if (tile == '1' || tile == '2' || tile == '3' || tile == '4') {
         var name;
@@ -110,6 +110,7 @@ PlayScene.prototype.loadMap = function (map) {
         }
         var ghost = new Ghost(name);
         ghost.setPosition(position);
+        ghost.setStartPosition(position);
         this._ghosts.push(ghost);
       }
     }
@@ -131,10 +132,6 @@ PlayScene.prototype.removePellet = function (pellet) {
       return;
     }
   }
-};
-
-PlayScene.prototype.getPacmanStartPosition = function () {
-  return this._pacmanStartPosition;
 };
 
 PlayScene.prototype.getGate = function () {

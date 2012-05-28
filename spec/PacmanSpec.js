@@ -75,7 +75,7 @@ describe("PlayScene", function () {
       expect(walls[1].getPosition()).toEqual({x: 0, y: TILE_SIZE});
       expect(walls[2].getPosition()).toEqual({x: TILE_SIZE * 2, y: TILE_SIZE});
       
-      expect(playScene.getPacmanStartPosition()).toEqual({x: TILE_SIZE, y: TILE_SIZE});
+      expect(playScene.getPacman().getStartPosition()).toEqual({x: TILE_SIZE, y: TILE_SIZE});
       
       var pellets = playScene.getPellets();
       expect(pellets.length).toEqual(2);
@@ -136,11 +136,17 @@ describe("When Play scene is just started", function () {
   });
   
   it("Pacman should be on the start position", function () {
-    expect(playScene.getPacman().getPosition()).toEqual(playScene.getPacmanStartPosition());
+    var pacman = playScene.getPacman();
+    expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
   });
   
   it("Score should be 0", function () {
     expect(playScene.getScore()).toEqual(0);
+  });
+  
+  it("Ghosts should be on their start positions", function () {
+    var ghosts = playScene.getGhosts();
+    expect(ghosts[0].getPosition()).toEqual(ghosts[0].getStartPosition());
   });
 });
 
