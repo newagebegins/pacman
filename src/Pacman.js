@@ -60,12 +60,18 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
 
 Pacman.prototype._handleCollisionsWithGhosts = function () {
   var ghosts = this._scene.getGhosts();
-  for (var ghost in ghosts) {
-    if (this._sprite.collidedWith(ghosts[ghost])) {
-      this._scene.getReadyMessage().show();
-      this.placeToStartPosition();
-      this._scene.placeGhostsToStartPositions();
-      return;
+  for (var i in ghosts) {
+    var ghost = ghosts[i];
+    if (this._sprite.collidedWith(ghost)) {
+      if (ghost.getState() == GHOST_STATE_NORMAL) {
+        this._scene.getReadyMessage().show();
+        this.placeToStartPosition();
+        this._scene.placeGhostsToStartPositions();
+        return;
+      }
+      else if (ghost.getState() == GHOST_STATE_VULNERABLE) {
+        ghost.runHome();
+      }
     }
   }
 };

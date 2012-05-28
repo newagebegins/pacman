@@ -3,12 +3,17 @@ var GHOST_PINKY = 'pinky';
 var GHOST_INKY = 'inky';
 var GHOST_CLYDE = 'clyde';
 
+var GHOST_STATE_NORMAL = 'normal';
+var GHOST_STATE_VULNERABLE = 'vulnerable';
+var GHOST_STATE_RUN_HOME = 'run_home';
+
 function Ghost(name, scene) {
   this._name = name;
   this._scene = scene;
   this._sprite = new Sprite(scene);
   this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
   this._sprite.setCurrentSpeed(2);
+  this._state = GHOST_STATE_NORMAL;
 }
 
 Ghost.prototype.getName = function () {
@@ -80,31 +85,42 @@ Ghost.prototype.setRandomDirectionNotBlockedByWall = function () {
   this._sprite.setDirection(getRandomElementFromArray(directions));
 };
 
-Ghost.prototype.makeVulnerable = function () {
-  this._vulnerable = true;
+Ghost.prototype.getState = function () {
+  return this._state;
 };
 
-Ghost.prototype.isVulnerable = function () {
-  return this._vulnerable;
+Ghost.prototype.makeVulnerable = function () {
+  this._state = GHOST_STATE_VULNERABLE;
+};
+
+Ghost.prototype.runHome = function () {
+  this._state = GHOST_STATE_RUN_HOME;
 };
 
 Ghost.prototype.draw = function (ctx) {
-  if (this.isVulnerable()) {
-    ctx.fillStyle = "green";
+  if (this._state == GHOST_STATE_RUN_HOME) {
+    ctx.fillStyle = "#e0fd7c";
+    ctx.fillRect(this.getX() + 2, this.getY() + 2, 3, 3);
+    ctx.fillRect(this.getX() + 6, this.getY() + 2, 3, 3);
   }
-  else if (this._name == GHOST_BLINKY) {
-    ctx.fillStyle = "#ff0000";
+  else {
+    if (this._state == GHOST_STATE_VULNERABLE) {
+      ctx.fillStyle = "green";
+    }
+    else if (this._name == GHOST_BLINKY) {
+      ctx.fillStyle = "#ff0000";
+    }
+    else if (this._name == GHOST_PINKY) {
+      ctx.fillStyle = "#ffb8de";
+    }
+    else if (this._name == GHOST_INKY) {
+      ctx.fillStyle = "#00ffde";
+    }
+    else if (this._name == GHOST_CLYDE) {
+      ctx.fillStyle = "#ffb847";
+    }
+    ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
   }
-  else if (this._name == GHOST_PINKY) {
-    ctx.fillStyle = "#ffb8de";
-  }
-  else if (this._name == GHOST_INKY) {
-    ctx.fillStyle = "#00ffde";
-  }
-  else if (this._name == GHOST_CLYDE) {
-    ctx.fillStyle = "#ffb847";
-  }
-  ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 };
 
 

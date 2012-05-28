@@ -411,9 +411,9 @@ describe("When Pacman collides with a power pellet", function () {
   });
   
   it("ghosts should become vulnerable", function () {
-    expect(ghost.isVulnerable()).toBeFalsy();
+    expect(ghost.getState()).toEqual(GHOST_STATE_NORMAL);
     game.tick();
-    expect(ghost.isVulnerable()).toBeTruthy();
+    expect(ghost.getState()).toEqual(GHOST_STATE_VULNERABLE);
   });
 });
 
@@ -486,28 +486,28 @@ describe("Ghost", function () {
 });
 
 describe("When Pacman touches a ghost", function () {
+  var map = ['C  1'];
+  var game, playScene, pacman, ghost;
+
+  beforeEach(function() {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+
+    pacman = playScene.getPacman();
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+    // remove from start position
+    pacman.setPosition({x: TILE_SIZE, y: 0});
+
+    ghost = playScene.getGhosts()[0];
+    ghost.setCurrentSpeed(0);
+    // remove from start position
+    ghost.setPosition({x: TILE_SIZE * 2, y: 0});
+  });
+    
   describe("and ghost is not vulnerable", function () {
-    var map = ['C  1'];
-    var game, playScene, pacman, ghost;
-    
-    beforeEach(function() {
-      game = new Game();
-      playScene = new PlayScene(game);
-      game.setScene(playScene);
-      playScene.loadMap(map);
-      playScene.getReadyMessage().hide();
-      
-      pacman = playScene.getPacman();
-      pacman.requestNewDirection(DIRECTION_RIGHT);
-      // remove from start position
-      pacman.setPosition({x: TILE_SIZE, y: 0});
-      
-      ghost = playScene.getGhosts()[0];
-      ghost.setCurrentSpeed(0);
-      // remove from start position
-      ghost.setPosition({x: TILE_SIZE * 2, y: 0});
-    });
-    
     it("Ready message should be visible", function () {
       expect(playScene.getReadyMessage().isVisible()).toBeFalsy();
       game.tick();
@@ -524,6 +524,18 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
       game.tick();
       expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
+    });
+  });
+  
+  describe("and ghost is vulnerable", function () {
+    beforeEach(function() {
+      ghost.makeVulnerable();
+    });
+    
+    it('ghost should run home', function () {
+      expect(ghost.getState()).toEqual(GHOST_STATE_VULNERABLE);
+      game.tick();
+      expect(ghost.getState()).toEqual(GHOST_STATE_RUN_HOME);
     });
   });
 });
