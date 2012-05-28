@@ -151,7 +151,7 @@ describe("When Play scene is just started", function () {
   
   it("Ghosts should have non-zero speed", function () {
     var ghosts = playScene.getGhosts();
-    expect(ghosts[0].getSpeed()).toBeGreaterThan(0);
+    expect(ghosts[0].getCurrentSpeed()).toBeGreaterThan(0);
   });
 });
 
@@ -388,5 +388,73 @@ describe("When Pacman collides with a pellet", function () {
     expect(playScene.getPellets().length).toEqual(2);
     game.tick();
     expect(playScene.getPellets().length).toEqual(1);
+  });
+});
+
+describe("Ghost", function () {
+  describe("#getRandomDirectionNotBlockedByWall", function () {
+    var game, playScene;
+    
+    beforeEach(function () {
+      game = new Game();
+      playScene = new PlayScene(game);
+      game.setScene(playScene);
+      playScene.getReadyMessage().hide();
+    });
+    
+    it("test 1", function () {
+      var map = ['###',
+                 '#1 ',
+                 '###'];
+      checkResult(map, [DIRECTION_RIGHT]);
+    });
+    
+    it("test 2", function () {
+      var map = ['###',
+                 ' 1#',
+                 '###'];
+      checkResult(map, [DIRECTION_LEFT]);
+    });
+    
+    it("test 3", function () {
+      var map = ['# #',
+                 '#1#',
+                 '###'];
+      checkResult(map, [DIRECTION_UP]);
+    });
+    
+    it("test 4", function () {
+      var map = ['###',
+                 '#1#',
+                 '# #'];
+      checkResult(map, [DIRECTION_DOWN]);
+    });
+    
+    it("test 5", function () {
+      var map = ['###',
+                 ' 1 ',
+                 '###'];
+      checkResult(map, [DIRECTION_LEFT, DIRECTION_RIGHT]);
+    });
+    
+    it("test 5", function () {
+      var map = ['# #',
+                 '#1#',
+                 '# #'];
+      checkResult(map, [DIRECTION_UP, DIRECTION_DOWN]);
+    });
+    
+    it("test 6", function () {
+      var map = ['# #',
+                 ' 1 ',
+                 '# #'];
+      checkResult(map, [DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN]);
+    });
+    
+    function checkResult(map, expectedDirections) {
+      playScene.loadMap(map);
+      var ghost = playScene.getGhosts()[0];
+      expect(ghost.getDirectionsNotBlockedByWall()).toEqual(expectedDirections);
+    }
   });
 });

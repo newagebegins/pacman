@@ -13,6 +13,10 @@ function PlayScene(game) {
   this._currentLevel = 1;
   this.loadMap(this._getMapForCurrentLevel());
   
+  for (var ghost in this._ghosts) {
+    this._ghosts[ghost].setRandomDirectionNotBlockedByWall();
+  }
+  
   this._score = 0;
 }
 

@@ -6,16 +6,13 @@ var GHOST_CLYDE = 'clyde';
 function Ghost(name, scene) {
   this._name = name;
   this._scene = scene;
-  this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
-  this._speed = 2;
+  this._sprite = new Sprite(scene);
+  this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
+  this._sprite.setCurrentSpeed(2);
 }
 
 Ghost.prototype.getName = function () {
   return this._name;
-};
-
-Ghost.prototype.getRect = function () {
-  return this._rect;
 };
 
 Ghost.prototype.setStartPosition = function (position) {
@@ -26,14 +23,35 @@ Ghost.prototype.getStartPosition = function () {
   return this._startPosition;
 };
 
-Ghost.prototype.getSpeed = function () {
-  return this._speed;
-};
-
 Ghost.prototype.tick = function () {
   if (!this._scene.getReadyMessage().isVisible()) {
-    this._move();
+    this._sprite.move(this._sprite.getDirection());
+    this._handleCollisionsWithWalls();
   }
+};
+
+Ghost.prototype._handleCollisionsWithWalls = function () {
+  var touchedWall = this._sprite.getTouchedWall();
+  if (touchedWall != null) {
+    this._sprite.resolveCollisionWithWall(touchedWall);
+    this.setRandomDirectionNotBlockedByWall();
+  }
+};
+
+Ghost.prototype.getDirectionsNotBlockedByWall = function () {
+  var directions = [DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, DIRECTION_DOWN];
+  var notBlockedDirections = [];
+  for (var i in directions) {
+    if (!this._sprite.willCollideWithWallIfMovedInDirection(directions[i])) {
+      notBlockedDirections.push(directions[i]);
+    }
+  }
+  return notBlockedDirections;
+};
+
+Ghost.prototype.setRandomDirectionNotBlockedByWall = function () {
+  var directions = this.getDirectionsNotBlockedByWall();
+  this._sprite.setDirection(directions[Math.floor(Math.random() * directions.length)]);
 };
 
 Ghost.prototype.draw = function (ctx) {
@@ -52,49 +70,57 @@ Ghost.prototype.draw = function (ctx) {
   ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 };
 
-Ghost.prototype._move = function () {
-  this._rect.move({x: 1, y: 0});
+
+/*--------------------------- Sprite delegation --------------------------------*/
+
+Ghost.prototype.getRect = function () {
+  return this._sprite.getRect();
 };
 
+Ghost.prototype.getDirection = function () {
+  return this._sprite.getDirection();
+};
 
-/*--------------------------- Rect delegation --------------------------------*/
+Ghost.prototype.getCurrentSpeed = function () {
+  return this._sprite.getCurrentSpeed();
+};
 
 Ghost.prototype.setPosition = function (position) {
-  this._rect.setPosition(position);
+  this._sprite.setPosition(position);
 };
 
 Ghost.prototype.getPosition = function () {
-  return this._rect.getPosition();
+  return this._sprite.getPosition();
 };
 
 Ghost.prototype.getX = function () {
-  return this._rect.getX();
+  return this._sprite.getX();
 };
 
 Ghost.prototype.getY = function () {
-  return this._rect.getY();
+  return this._sprite.getY();
 };
 
 Ghost.prototype.getLeft = function () {
-  return this._rect.getLeft();
+  return this._sprite.getLeft();
 };
 
 Ghost.prototype.getRight = function () {
-  return this._rect.getRight();
+  return this._sprite.getRight();
 };
 
 Ghost.prototype.getTop = function () {
-  return this._rect.getTop();
+  return this._sprite.getTop();
 };
 
 Ghost.prototype.getBottom = function () {
-  return this._rect.getBottom();
+  return this._sprite.getBottom();
 };
 
 Ghost.prototype.getWidth = function () {
-  return this._rect.getWidth();
+  return this._sprite.getWidth();
 };
 
 Ghost.prototype.getHeight = function () {
-  return this._rect.getHeight();
+  return this._sprite.getHeight();
 };
