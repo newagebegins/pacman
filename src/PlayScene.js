@@ -176,6 +176,12 @@ PlayScene.prototype.placeGhostsToStartPositions = function () {
   }
 };
 
+PlayScene.prototype.makeGhostsVulnerable = function () {
+  for (var ghost in this._ghosts) {
+    this._ghosts[ghost].makeVulnerable();
+  }
+};
+
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
     return  ['#############################',

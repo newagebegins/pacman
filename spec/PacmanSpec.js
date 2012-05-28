@@ -267,8 +267,8 @@ describe("Pacman", function () {
 
 describe("Pacman shouldn't move through the walls", function () {
   var map = ['###',
-              '#C#',
-              '###'];
+             '#C#',
+             '###'];
   var game, playScene, pacman, INITIAL_POS;
 
   beforeEach(function () {
@@ -391,6 +391,29 @@ describe("When Pacman collides with a pellet", function () {
     expect(playScene.getPellets().length).toEqual(2);
     game.tick();
     expect(playScene.getPellets().length).toEqual(1);
+  });
+});
+
+describe("When Pacman collides with a power pellet", function () {
+  var map = ['CO1'];
+  var game, playScene, pacman, ghost;
+  
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+    pacman = playScene.getPacman();
+    pacman.setSpeed(TILE_SIZE);
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+    ghost = playScene.getGhosts()[0];
+  });
+  
+  it("ghosts should become vulnerable", function () {
+    expect(ghost.isVulnerable()).toBeFalsy();
+    game.tick();
+    expect(ghost.isVulnerable()).toBeTruthy();
   });
 });
 

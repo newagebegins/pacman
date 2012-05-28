@@ -49,6 +49,9 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
   for (var pellet in pellets) {
     if (this._sprite.collidedWith(pellets[pellet])) {
       this._scene.increaseScore(pellets[pellet].getValue());
+      if (pellets[pellet] instanceof PowerPellet) {
+        this._scene.makeGhostsVulnerable();
+      }
       this._scene.removePellet(pellets[pellet]);
       return;
     }

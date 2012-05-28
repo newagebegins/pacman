@@ -80,8 +80,19 @@ Ghost.prototype.setRandomDirectionNotBlockedByWall = function () {
   this._sprite.setDirection(getRandomElementFromArray(directions));
 };
 
+Ghost.prototype.makeVulnerable = function () {
+  this._vulnerable = true;
+};
+
+Ghost.prototype.isVulnerable = function () {
+  return this._vulnerable;
+};
+
 Ghost.prototype.draw = function (ctx) {
-  if (this._name == GHOST_BLINKY) {
+  if (this.isVulnerable()) {
+    ctx.fillStyle = "green";
+  }
+  else if (this._name == GHOST_BLINKY) {
     ctx.fillStyle = "#ff0000";
   }
   else if (this._name == GHOST_PINKY) {
