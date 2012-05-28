@@ -1,6 +1,10 @@
 function ReadyMessage() {}
 
 ReadyMessage.prototype.setVisibilityDuration = function (duration) {
+  this._visibilityDuration = duration;
+};
+
+ReadyMessage.prototype.setTimeToHide = function (duration) {
   this._timeToHide = duration;
 };
 
@@ -10,6 +14,10 @@ ReadyMessage.prototype.getTimeToHide = function () {
 
 ReadyMessage.prototype.isVisible = function () {
   return this._timeToHide > 0;
+};
+
+ReadyMessage.prototype.show = function () {
+  this._timeToHide = this._visibilityDuration;
 };
 
 ReadyMessage.prototype.hide = function () {

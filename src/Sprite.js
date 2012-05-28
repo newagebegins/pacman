@@ -100,6 +100,18 @@ Sprite.prototype.collidedWith = function (other) {
   return this._rect.intersectsRect(other.getRect());
 };
 
+Sprite.prototype.setStartPosition = function (position) {
+  this._startPosition = position;
+};
+
+Sprite.prototype.getStartPosition = function () {
+  return this._startPosition;
+};
+
+Sprite.prototype.placeToStartPosition = function () {
+  this.setPosition(this._startPosition);
+};
+
 
 /*--------------------------- Rect delegation --------------------------------*/
 

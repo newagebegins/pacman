@@ -104,7 +104,7 @@ describe("When Play scene is just started", function () {
   it("Ready message should be visible for a certain amount of time", function () {
     var VISIBILITY_DURATION = 3;
     var readyMessage = playScene.getReadyMessage();
-    readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
+    readyMessage.setTimeToHide(VISIBILITY_DURATION);
     
     expect(readyMessage.isVisible()).toBeTruthy();
     expect(readyMessage.getTimeToHide()).toEqual(VISIBILITY_DURATION);
@@ -168,7 +168,7 @@ describe("When on Play scene and Ready message is visible", function () {
     var VISIBILITY_DURATION = 2;
     var pacman = playScene.getPacman();
     var readyMessage = playScene.getReadyMessage();
-    readyMessage.setVisibilityDuration(VISIBILITY_DURATION);
+    readyMessage.setTimeToHide(VISIBILITY_DURATION);
     
     expect(readyMessage.isVisible()).toBeTruthy();
     expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
@@ -209,7 +209,7 @@ describe("ReadyMessage", function () {
   describe("#hide", function () {
     it("should hide message", function () {
       var message = new ReadyMessage();
-      message.setVisibilityDuration(10);
+      message.setTimeToHide(10);
       expect(message.isVisible()).toBeTruthy();
       message.hide();
       expect(message.isVisible()).toBeFalsy();
@@ -456,5 +456,48 @@ describe("Ghost", function () {
       var ghost = playScene.getGhosts()[0];
       expect(ghost.getDirectionsNotBlockedByWall()).toEqual(expectedDirections);
     }
+  });
+});
+
+describe("When Pacman touches a ghost", function () {
+  describe("and ghost is not vulnerable", function () {
+    var map = ['C  1'];
+    var game, playScene, pacman, ghost;
+    
+    beforeEach(function() {
+      game = new Game();
+      playScene = new PlayScene(game);
+      game.setScene(playScene);
+      playScene.loadMap(map);
+      playScene.getReadyMessage().hide();
+      
+      pacman = playScene.getPacman();
+      pacman.requestNewDirection(DIRECTION_RIGHT);
+      // remove from start position
+      pacman.setPosition({x: TILE_SIZE, y: 0});
+      
+      ghost = playScene.getGhosts()[0];
+      ghost.setCurrentSpeed(0);
+      // remove from start position
+      ghost.setPosition({x: TILE_SIZE * 2, y: 0});
+    });
+    
+    it("Ready message should be visible", function () {
+      expect(playScene.getReadyMessage().isVisible()).toBeFalsy();
+      game.tick();
+      expect(playScene.getReadyMessage().isVisible()).toBeTruthy();
+    });
+    
+    it("Pacman should be on the start position", function () {
+      expect(pacman.getPosition()).not.toEqual(pacman.getStartPosition());
+      game.tick();
+      expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
+    });
+    
+    it("Ghosts should be on their start positions", function () {
+      expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
+      game.tick();
+      expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
+    });
   });
 });

@@ -4,14 +4,6 @@ function Pacman(scene) {
   this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
 }
 
-Pacman.prototype.setStartPosition = function (position) {
-  this._startPosition = position;
-};
-
-Pacman.prototype.getStartPosition = function () {
-  return this._startPosition;
-};
-
 Pacman.prototype.requestNewDirection = function (direction) {
   if (this._sprite.willCollideWithWallIfMovedInDirection(direction)) {
     return;
@@ -25,6 +17,7 @@ Pacman.prototype.tick = function () {
     this._sprite.move(this._sprite.getDirection());
     this._handleCollisionsWithWalls();
     this._handleCollisionsWithPellets();
+    this._handleCollisionsWithGhosts();
   }
 };
 
@@ -57,6 +50,18 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
     if (this._sprite.collidedWith(pellets[pellet])) {
       this._scene.increaseScore(NORMAL_PELLET_VALUE);
       this._scene.removePellet(pellets[pellet]);
+      return;
+    }
+  }
+};
+
+Pacman.prototype._handleCollisionsWithGhosts = function () {
+  var ghosts = this._scene.getGhosts();
+  for (var ghost in ghosts) {
+    if (this._sprite.collidedWith(ghosts[ghost])) {
+      this._scene.getReadyMessage().show();
+      this.placeToStartPosition();
+      this._scene.placeGhostsToStartPositions();
       return;
     }
   }
@@ -124,4 +129,16 @@ Pacman.prototype.getWidth = function () {
 
 Pacman.prototype.getHeight = function () {
   return this._sprite.getHeight();
+};
+
+Pacman.prototype.setStartPosition = function (position) {
+  this._sprite.setStartPosition(position);
+};
+
+Pacman.prototype.getStartPosition = function () {
+  return this._sprite.getStartPosition();
+};
+
+Pacman.prototype.placeToStartPosition = function () {
+  this._sprite.placeToStartPosition();
 };

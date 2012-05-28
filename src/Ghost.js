@@ -15,14 +15,6 @@ Ghost.prototype.getName = function () {
   return this._name;
 };
 
-Ghost.prototype.setStartPosition = function (position) {
-  this._startPosition = position;
-};
-
-Ghost.prototype.getStartPosition = function () {
-  return this._startPosition;
-};
-
 Ghost.prototype.tick = function () {
   if (this._scene.getReadyMessage().isVisible()) {
     return;
@@ -115,6 +107,10 @@ Ghost.prototype.getDirection = function () {
   return this._sprite.getDirection();
 };
 
+Ghost.prototype.setCurrentSpeed = function (speed) {
+  this._sprite.setCurrentSpeed(speed);
+};
+
 Ghost.prototype.getCurrentSpeed = function () {
   return this._sprite.getCurrentSpeed();
 };
@@ -157,4 +153,16 @@ Ghost.prototype.getWidth = function () {
 
 Ghost.prototype.getHeight = function () {
   return this._sprite.getHeight();
+};
+
+Ghost.prototype.setStartPosition = function (position) {
+  this._sprite.setStartPosition(position);
+};
+
+Ghost.prototype.getStartPosition = function () {
+  return this._sprite.getStartPosition();
+};
+
+Ghost.prototype.placeToStartPosition = function () {
+  this._sprite.placeToStartPosition();
 };

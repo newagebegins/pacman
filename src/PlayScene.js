@@ -5,6 +5,7 @@ function PlayScene(game) {
   
   this._readyMessage = new ReadyMessage();
   this._readyMessage.setVisibilityDuration(50);
+  this._readyMessage.show();
   
   this._pacman = new Pacman(this);
   this._pacman.setSpeed(2);
@@ -160,6 +161,12 @@ PlayScene.prototype.getScore = function () {
 
 PlayScene.prototype.increaseScore = function (amount) {
   this._score += amount;
+};
+
+PlayScene.prototype.placeGhostsToStartPositions = function () {
+  for (var ghost in this._ghosts) {
+    this._ghosts[ghost].placeToStartPosition();
+  }
 };
 
 PlayScene.prototype._getMapForCurrentLevel = function () {
