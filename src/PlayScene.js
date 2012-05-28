@@ -95,7 +95,20 @@ PlayScene.prototype.loadMap = function (map) {
         this._pacman.setPosition(this._pacmanStartPosition);
       }
       else if (tile == '1' || tile == '2' || tile == '3' || tile == '4') {
-        var ghost = new Ghost();
+        var name;
+        if (tile == '1') {
+          name = GHOST_BLINKY;
+        }
+        else if (tile == '2') {
+          name = GHOST_PINKY;
+        }
+        else if (tile == '3') {
+          name = GHOST_INKY;
+        }
+        else if (tile == '4') {
+          name = GHOST_CLYDE;
+        }
+        var ghost = new Ghost(name);
         ghost.setPosition(position);
         this._ghosts.push(ghost);
       }
@@ -151,7 +164,7 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '# #### ###### ###### #### # #',
              '# #  # #     1     # #  # # #',
              '# #  # # # ##-## # # #  # # #',
-             '# #### # # #   # # # #### # #',
+             '# #### # # #234# # # #### # #',
              '#        # ##### #          #',
              '# ######## ##### ########## #',
              '#C  ................        #',

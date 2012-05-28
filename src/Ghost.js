@@ -1,13 +1,34 @@
-function Ghost() {
+var GHOST_BLINKY = 'blinky';
+var GHOST_PINKY = 'pinky';
+var GHOST_INKY = 'inky';
+var GHOST_CLYDE = 'clyde';
+
+function Ghost(name) {
+  this._name = name;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
 }
+
+Ghost.prototype.getName = function () {
+  return this._name;
+};
 
 Ghost.prototype.getRect = function () {
   return this._rect;
 };
 
 Ghost.prototype.draw = function (ctx) {
-  ctx.fillStyle = "orange";
+  if (this._name == GHOST_BLINKY) {
+    ctx.fillStyle = "#ff0000";
+  }
+  else if (this._name == GHOST_PINKY) {
+    ctx.fillStyle = "#ffb8de";
+  }
+  else if (this._name == GHOST_INKY) {
+    ctx.fillStyle = "#00ffde";
+  }
+  else if (this._name == GHOST_CLYDE) {
+    ctx.fillStyle = "#ffb847";
+  }
   ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 };
 
