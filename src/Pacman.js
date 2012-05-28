@@ -48,7 +48,7 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
   var pellets = this._scene.getPellets();
   for (var pellet in pellets) {
     if (this._sprite.collidedWith(pellets[pellet])) {
-      this._scene.increaseScore(NORMAL_PELLET_VALUE);
+      this._scene.increaseScore(pellets[pellet].getValue());
       this._scene.removePellet(pellets[pellet]);
       return;
     }

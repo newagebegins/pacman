@@ -93,6 +93,13 @@ PlayScene.prototype.loadMap = function (map) {
         pellet.setPosition(position);
         this._pellets.push(pellet);
       }
+      else if (tile == 'O') {
+        var powerPellet = new PowerPellet();
+        position.x += (TILE_SIZE - POWER_PELLET_SIZE) / 2 + 1;
+        position.y += (TILE_SIZE - POWER_PELLET_SIZE) / 2 + 1;
+        powerPellet.setPosition(position);
+        this._pellets.push(powerPellet);
+      }
       else if (tile == '-') {
         var gate = new Gate();
         position.y += (TILE_SIZE - GATE_HEIGHT) / 2 + 1;
@@ -172,14 +179,14 @@ PlayScene.prototype.placeGhostsToStartPositions = function () {
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
     return  ['#############################',
-             '#                           #',
+             '#O                         O#',
              '# #### ###### ###### #### # #',
              '# #  # #     1     # #  # # #',
              '# #  # # # ##-## # # #  # # #',
              '# #### # # #234# # # #### # #',
-             '#        # ##### #          #',
+             '#       O# ##### #          #',
              '# ######## ##### ########## #',
-             '#C  ................        #',
+             '#C  ................       O#',
              '#############################'];
   }
   return [];

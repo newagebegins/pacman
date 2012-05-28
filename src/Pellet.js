@@ -1,5 +1,4 @@
 var NORMAL_PELLET_SIZE = TILE_SIZE / 5;
-var NORMAL_PELLET_VALUE = 100;
 
 function Pellet() {
   this._rect = new Rect({x: 0, y: 0, w: NORMAL_PELLET_SIZE, h: NORMAL_PELLET_SIZE});
@@ -7,6 +6,10 @@ function Pellet() {
 
 Pellet.prototype.getRect = function () {
   return this._rect;
+};
+
+Pellet.prototype.getValue = function () {
+  return 100;
 };
 
 Pellet.prototype.draw = function (ctx) {

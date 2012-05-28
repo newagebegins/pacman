@@ -65,7 +65,7 @@ describe("PlayScene", function () {
   describe("#loadMap", function () {
     it("sample map", function () {
       var map = ['# .-1234',
-                 '#C#     ',
+                 '#C#OO   ',
                  '##.     '];
       playScene.loadMap(map);
       
@@ -78,7 +78,9 @@ describe("PlayScene", function () {
       expect(playScene.getPacman().getStartPosition()).toEqual({x: TILE_SIZE, y: TILE_SIZE});
       
       var pellets = playScene.getPellets();
-      expect(pellets.length).toEqual(2);
+      expect(pellets.length).toEqual(4);
+      expect(pellets[0] instanceof Pellet).toBeTruthy();
+      expect(pellets[1] instanceof PowerPellet).toBeTruthy();
       
       expect(playScene.getGate() instanceof Gate).toBeTruthy();
       
@@ -365,7 +367,7 @@ describe("When Pacman is moving and is given a command to change direction", fun
 
 describe("When Pacman collides with a pellet", function () {
   var map = ['C..'];
-  var game, playScene, pacman;
+  var game, playScene, pacman, PELLET_VALUE;
   
   beforeEach(function () {
     game = new Game();
@@ -376,12 +378,13 @@ describe("When Pacman collides with a pellet", function () {
     pacman = playScene.getPacman();
     pacman.setSpeed(TILE_SIZE);
     pacman.requestNewDirection(DIRECTION_RIGHT);
+    PELLET_VALUE = playScene.getPellets()[0].getValue();
   });
   
   it("score should increase by pellet's value", function () {
     expect(playScene.getScore()).toEqual(0);
     game.tick();
-    expect(playScene.getScore()).toEqual(NORMAL_PELLET_VALUE);
+    expect(playScene.getScore()).toEqual(PELLET_VALUE);
   });
   
   it("pellet should disappear", function () {
