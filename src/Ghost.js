@@ -7,6 +7,7 @@ function Ghost(name, scene) {
   this._name = name;
   this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
+  this._speed = 2;
 }
 
 Ghost.prototype.getName = function () {
@@ -25,9 +26,13 @@ Ghost.prototype.getStartPosition = function () {
   return this._startPosition;
 };
 
+Ghost.prototype.getSpeed = function () {
+  return this._speed;
+};
+
 Ghost.prototype.tick = function () {
   if (!this._scene.getReadyMessage().isVisible()) {
-    this._rect.move({x: 1, y: 0});
+    this._move();
   }
 };
 
@@ -45,6 +50,10 @@ Ghost.prototype.draw = function (ctx) {
     ctx.fillStyle = "#ffb847";
   }
   ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+};
+
+Ghost.prototype._move = function () {
+  this._rect.move({x: 1, y: 0});
 };
 
 

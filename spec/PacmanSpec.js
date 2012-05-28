@@ -148,6 +148,11 @@ describe("When Play scene is just started", function () {
     var ghosts = playScene.getGhosts();
     expect(ghosts[0].getPosition()).toEqual(ghosts[0].getStartPosition());
   });
+  
+  it("Ghosts should have non-zero speed", function () {
+    var ghosts = playScene.getGhosts();
+    expect(ghosts[0].getSpeed()).toBeGreaterThan(0);
+  });
 });
 
 describe("When on Play scene and Ready message is visible", function () {
