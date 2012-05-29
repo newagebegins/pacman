@@ -101,6 +101,8 @@ PlayScene.prototype.loadMap = function (map) {
         this._pellets.push(powerPellet);
       }
       else if (tile == '-') {
+        this._lairPosition = {x: position.x, y: position.y + TILE_SIZE};
+          
         var gate = new Gate();
         position.y += (TILE_SIZE - GATE_HEIGHT) / 2 + 1;
         gate.setPosition(position);
@@ -152,6 +154,14 @@ PlayScene.prototype.removePellet = function (pellet) {
 
 PlayScene.prototype.getGate = function () {
   return this._gate;
+};
+
+/**
+ * Ghost Lair is a cell just under the cell where the gate is located.
+ * When ghosts are in Run Home state they move to lair cell for revival.
+ */
+PlayScene.prototype.getLairPosition = function () {
+  return this._lairPosition;
 };
 
 PlayScene.prototype.getGhosts = function () {

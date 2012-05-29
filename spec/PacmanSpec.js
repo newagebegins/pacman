@@ -65,7 +65,7 @@ describe("PlayScene", function () {
   describe("#loadMap", function () {
     it("sample map", function () {
       var map = ['# .-1234',
-                 '#C#OO   ',
+                 '#C# OO  ',
                  '##.     '];
       playScene.loadMap(map);
       
@@ -83,6 +83,7 @@ describe("PlayScene", function () {
       expect(pellets[1] instanceof PowerPellet).toBeTruthy();
       
       expect(playScene.getGate() instanceof Gate).toBeTruthy();
+      expect(playScene.getLairPosition()).toEqual({x: 3 * TILE_SIZE , y: TILE_SIZE});
       
       var ghosts = playScene.getGhosts();
       expect(ghosts.length).toEqual(4);
