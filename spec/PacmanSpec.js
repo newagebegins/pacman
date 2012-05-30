@@ -863,3 +863,30 @@ describe("When vulnerable ghost collides with Pacman", function () {
     });
   });
 });
+
+describe("Power pellet", function () {
+  it("should blink", function () {
+    var game = new Game();
+    var scene = new PlayScene(game);
+    game.setScene(scene);
+    var map = ['O'];
+    scene.loadMap(map);
+    scene.getReadyMessage().hide();
+    var powerPellet = scene.getPellets()[0];
+    powerPellet.setBlinkDuration(2);
+    
+    expect(powerPellet.isVisible()).toBeTruthy();
+    game.tick();
+    expect(powerPellet.isVisible()).toBeTruthy();
+    
+    game.tick();
+    expect(powerPellet.isVisible()).toBeFalsy();
+    game.tick();
+    expect(powerPellet.isVisible()).toBeFalsy();
+    
+    game.tick();
+    expect(powerPellet.isVisible()).toBeTruthy();
+    game.tick();
+    expect(powerPellet.isVisible()).toBeTruthy();
+  });
+});

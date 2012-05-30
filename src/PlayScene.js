@@ -28,11 +28,15 @@ PlayScene.prototype.tick = function () {
   for (var ghost in this._ghosts) {
     this._ghosts[ghost].tick();
   }
+  
+  for (var pellet in this._pellets) {
+    if (this._pellets[pellet] instanceof PowerPellet) {
+      this._pellets[pellet].tick();
+    }
+  }
 };
 
 PlayScene.prototype.draw = function (ctx) {
-  this._pacman.draw(ctx);
-  
   for (var wall in this._walls) {
     this._walls[wall].draw(ctx);
   }
@@ -44,6 +48,8 @@ PlayScene.prototype.draw = function (ctx) {
   for (var ghost in this._ghosts) {
     this._ghosts[ghost].draw(ctx);
   }
+  
+  this._pacman.draw(ctx);
   
   this._gate.draw(ctx);
   this._drawScore(ctx);
