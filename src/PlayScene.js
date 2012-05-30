@@ -7,7 +7,7 @@ function PlayScene(game) {
   this._readyMessage.setVisibilityDuration(50);
   this._readyMessage.show();
   
-  this._pacman = new Pacman(this);
+  this._pacman = new Pacman(this, game);
   this._pacman.setSpeed(4);
   this._pacman.requestNewDirection(DIRECTION_RIGHT);
   
@@ -53,6 +53,7 @@ PlayScene.prototype.draw = function (ctx) {
   
   this._gate.draw(ctx);
   this._drawScore(ctx);
+  this._drawLives(ctx);
   this._readyMessage.draw(ctx);
 };
 
@@ -63,6 +64,16 @@ PlayScene.prototype._drawScore = function (ctx) {
   ctx.font = "bold 14px 'Lucida Console', Monaco, monospace"
   var text = "SCORE: " + this._score;
   ctx.fillText(text, SCORE_X, SCORE_Y);
+};
+
+PlayScene.prototype._drawLives = function (ctx) {
+  var x = 0;
+  var width = 18
+  var y = 220;
+  
+  for (var i = 0; i < this._pacman.getLivesCount(); ++i) {
+    ctx.drawImage(ImageManager.getImage('pacman_3l'), x + i * width, y);
+  }
 };
 
 PlayScene.prototype.keyPressed = function (key) {

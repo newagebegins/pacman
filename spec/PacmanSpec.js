@@ -210,6 +210,10 @@ describe("When Play scene is just started", function () {
     var ghosts = playScene.getGhosts();
     expect(ghosts[0].getCurrentSpeed()).toBeGreaterThan(0);
   });
+  
+  it("Pacman should have 2 lives", function () {
+    expect(playScene.getPacman().getLivesCount()).toEqual(2);
+  });
 });
 
 describe("When on Play scene and Ready message is visible", function () {
@@ -746,6 +750,20 @@ describe("When Pacman touches a ghost", function () {
       expect(ghostRunHome.getState()).toEqual(GHOST_STATE_NORMAL);
       expect(ghostVulnerable.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
       expect(ghostRunHome.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
+    });
+    
+    it("Pacman should lose one life", function () {
+      expect(pacman.getLivesCount()).toEqual(2);
+      game.tick();
+      expect(pacman.getLivesCount()).toEqual(1);
+    });
+    
+    describe("and Pacman has no lives left", function () {
+      it("startup screen should appear", function () {
+        pacman.setLivesCount(0);
+        game.tick();
+        expect(game.getScene() instanceof StartupScene).toBeTruthy();
+      });
     });
   });
   

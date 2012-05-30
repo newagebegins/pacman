@@ -1,11 +1,22 @@
-function Pacman(scene) {
+function Pacman(scene, game) {
   this._scene = scene;
+  this._game = game;
   this._sprite = new Sprite(scene);
   this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
   
   this._frames = [1,2,3,2];
   this._frame = 0;
+  
+  this._livesCount = 2;
 }
+
+Pacman.prototype.setLivesCount = function (lives) {
+  this._livesCount = lives;
+};
+
+Pacman.prototype.getLivesCount = function () {
+  return this._livesCount;
+};
 
 Pacman.prototype.requestNewDirection = function (direction) {
   if (this._sprite.willCollideWithWallIfMovedInDirection(direction)) {
@@ -75,6 +86,11 @@ Pacman.prototype._handleCollisionsWithGhosts = function () {
     var ghost = ghosts[i];
     if (this._sprite.collidedWith(ghost)) {
       if (ghost.getState() == GHOST_STATE_NORMAL) {
+        if (this._livesCount == 0) {
+          this._game.setScene(new StartupScene(this._game));
+          return;
+        }
+        this._livesCount--;
         this._scene.getReadyMessage().show();
         this.placeToStartPosition();
         this._scene.placeGhostsToStartPositions();
