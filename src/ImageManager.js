@@ -10,6 +10,10 @@ var ImageManager = (function() {
     wall_b: null,
     wall_l: null,
     wall_r: null,
+    wall_mt: null,
+    wall_mb: null,
+    wall_ml: null,
+    wall_mr: null,
     
     pacman_1: null,
     pacman_2l: null,

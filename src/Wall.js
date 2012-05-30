@@ -1,5 +1,6 @@
-function Wall(image) {
+function Wall(image, scene) {
   this._image = image;
+  this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
 }
 
@@ -12,7 +13,9 @@ Wall.prototype.getImage = function () {
 };
 
 Wall.prototype.draw = function (ctx) {
-  ctx.drawImage(ImageManager.getImage(this._image), this.getX(), this.getY());
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  ctx.drawImage(ImageManager.getImage(this._image), x, y);
 };
 
 

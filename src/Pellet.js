@@ -1,6 +1,7 @@
 var NORMAL_PELLET_SIZE = TILE_SIZE / 5;
 
-function Pellet() {
+function Pellet(scene) {
+  this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: NORMAL_PELLET_SIZE, h: NORMAL_PELLET_SIZE});
 }
 
@@ -9,11 +10,14 @@ Pellet.prototype.getRect = function () {
 };
 
 Pellet.prototype.getValue = function () {
-  return 100;
+  return 10;
 };
 
 Pellet.prototype.draw = function (ctx) {
-  ctx.drawImage(ImageManager.getImage('pellet'), this.getX(), this.getY());
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  
+  ctx.drawImage(ImageManager.getImage('pellet'), x, y);
 };
 
 

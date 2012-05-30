@@ -100,6 +100,10 @@ describe("PlayScene", function () {
                  '##  #  ###  # # #   # ',
                  ' #  #   #   ### #   ##',
                  '## ###          #    #',
+                 '#                    #',
+                 '# #   #     # #      #',
+                 '# ## ##    ## ##     #',
+                 '# #   #     # #      #',
                  '#       ###          #',
                  '######### ############'];
       scene.loadMap(map);
@@ -110,17 +114,17 @@ describe("PlayScene", function () {
       expect(scene.getWallAtTile(21, 0).getImage()).toEqual('wall_trc');
       expect(scene.getWallAtTile(14, 2).getImage()).toEqual('wall_trc');
       
-      expect(scene.getWallAtTile(0, 7).getImage()).toEqual('wall_blc');
+      expect(scene.getWallAtTile(0, 11).getImage()).toEqual('wall_blc');
       expect(scene.getWallAtTile(12, 4).getImage()).toEqual('wall_blc');
-      expect(scene.getWallAtTile(10, 7).getImage()).toEqual('wall_blc');
+      expect(scene.getWallAtTile(10, 11).getImage()).toEqual('wall_blc');
       expect(scene.getWallAtTile(0, 3).getImage()).toEqual('wall_blc');
       
-      expect(scene.getWallAtTile(21, 7).getImage()).toEqual('wall_brc');
+      expect(scene.getWallAtTile(21, 11).getImage()).toEqual('wall_brc');
       expect(scene.getWallAtTile(14, 4).getImage()).toEqual('wall_brc');
-      expect(scene.getWallAtTile(8, 7).getImage()).toEqual('wall_brc');
+      expect(scene.getWallAtTile(8, 11).getImage()).toEqual('wall_brc');
       
       expect(scene.getWallAtTile(1, 0).getImage()).toEqual('wall_h');
-      expect(scene.getWallAtTile(1, 7).getImage()).toEqual('wall_h');
+      expect(scene.getWallAtTile(1, 11).getImage()).toEqual('wall_h');
       expect(scene.getWallAtTile(13, 4).getImage()).toEqual('wall_h');
       
       expect(scene.getWallAtTile(0, 1).getImage()).toEqual('wall_v');
@@ -131,6 +135,11 @@ describe("PlayScene", function () {
       expect(scene.getWallAtTile(8, 4).getImage()).toEqual('wall_b');
       expect(scene.getWallAtTile(7, 3).getImage()).toEqual('wall_l');
       expect(scene.getWallAtTile(9, 3).getImage()).toEqual('wall_r');
+      
+      expect(scene.getWallAtTile(4, 2).getImage()).toEqual('wall_mt');
+      expect(scene.getWallAtTile(4, 5).getImage()).toEqual('wall_mb');
+      expect(scene.getWallAtTile(2, 8).getImage()).toEqual('wall_ml');
+      expect(scene.getWallAtTile(6, 8).getImage()).toEqual('wall_mr');
     });
   });
   

@@ -19,7 +19,17 @@ function PlayScene(game) {
   }
   
   this._score = 0;
+  this._x = 50;
+  this._y = 50;
 }
+
+PlayScene.prototype.getX = function () {
+  return this._x;
+};
+
+PlayScene.prototype.getY = function () {
+  return this._y;
+};
 
 PlayScene.prototype.tick = function () {
   this._readyMessage.tick();
@@ -58,18 +68,18 @@ PlayScene.prototype.draw = function (ctx) {
 };
 
 PlayScene.prototype._drawScore = function (ctx) {
-  var SCORE_X = 0;
-  var SCORE_Y = 200;
-  ctx.fillStyle = "red";
+  var SCORE_X = 55;
+  var SCORE_Y = 30;
+  ctx.fillStyle = "#dedede";
   ctx.font = "bold 14px 'Lucida Console', Monaco, monospace"
   var text = "SCORE: " + this._score;
   ctx.fillText(text, SCORE_X, SCORE_Y);
 };
 
 PlayScene.prototype._drawLives = function (ctx) {
-  var x = 0;
+  var x = 55;
   var width = 18
-  var y = 220;
+  var y = 430;
   
   for (var i = 0; i < this._pacman.getLivesCount(); ++i) {
     ctx.drawImage(ImageManager.getImage('pacman_3l'), x + i * width, y);
@@ -102,24 +112,24 @@ PlayScene.prototype.loadMap = function (map) {
       var position = new Position(col * TILE_SIZE, row * TILE_SIZE);
       
       if (tile == '#') {
-        var wall = new Wall(this._getWallImage(map, row, col));
+        var wall = new Wall(this._getWallImage(map, row, col), this);
         wall.setPosition(position);
         this._walls.push(wall);
       }
       else if (tile == '.') {
-        var pellet = new Pellet();
+        var pellet = new Pellet(this);
         pellet.setPosition(position);
         this._pellets.push(pellet);
       }
       else if (tile == 'O') {
-        var powerPellet = new PowerPellet();
+        var powerPellet = new PowerPellet(this);
         powerPellet.setPosition(position);
         this._pellets.push(powerPellet);
       }
       else if (tile == '-') {
         this._lairPosition = new Position(position.x, position.y + TILE_SIZE);
           
-        var gate = new Gate();
+        var gate = new Gate(this);
         position.y += (TILE_SIZE - GATE_HEIGHT) / 2 + 1;
         gate.setPosition(position);
         this._gate = gate;
@@ -207,6 +217,26 @@ PlayScene.prototype._getWallImage = function (map, row, col) {
       ((col == last_col || map[row][col+1] != '#') && (row == 0 || map[row-1][col] != '#') && (row == last_row || map[row+1][col] != '#'))) {
     return 'wall_r';
   }
+  else if ((col > 0 && col < last_col && row < last_row) &&
+      (map[row][col-1] == '#' && map[row][col+1] == '#' && map[row+1][col] == '#') &&
+      (row == 0 || map[row-1][col] != '#')) {
+    return 'wall_mt';
+  }
+  else if ((col > 0 && col < last_col && row > 0) &&
+      (map[row][col-1] == '#' && map[row][col+1] == '#' && map[row-1][col] == '#') &&
+      (row == last_row || map[row+1][col] != '#')) {
+    return 'wall_mb';
+  }
+  else if ((row > 0 && row < last_row && col < last_col) &&
+      (map[row-1][col] == '#' && map[row+1][col] == '#' && map[row][col+1] == '#') &&
+      (col == 0 || map[row][col-1] != '#')) {
+    return 'wall_ml';
+  }
+  else if ((row > 0 && row < last_row && col > 0) &&
+      (map[row-1][col] == '#' && map[row+1][col] == '#' && map[row][col-1] == '#') &&
+      (col == last_col || map[row][col+1] != '#')) {
+    return 'wall_mr';
+  }
   
   return null;
 };
@@ -270,16 +300,29 @@ PlayScene.prototype.makeGhostsVulnerable = function () {
 
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
-    return  ['#############################',
-             '#O                         O#',
-             '# #### ###### ###### #### # #',
-             '# #  # #     1     # #  # # #',
-             '# #  # # # ##-## # # #  # # #',
-             '# #### # # #234# # # #### # #',
-             '#       O# ##### #          #',
-             '# ########       ########## #',
-             '#C  .......#####....       O#',
-             '############   ##############'];
+    return  ['###########################',
+             '#............#............#',
+             '#.####.#####.#.#####.####.#',
+             '#O#  #.#   #.#.#   #.#  #O#',
+             '#.####.#####.#.#####.####.#',
+             '#.........................#',
+             '#.######.#.#####.#.######.#',
+             '#........#...#...#........#',
+             '########.### # ###.########',
+             '       #.#   1   #.#       ',
+             '########.# ##-## #.########',
+             '#       .  #234#  .       #',
+             '########.# ##### #.########',
+             '       #.#   C   #.#       ',
+             '########.# ##### #.########',
+             '#............#............#',
+             '#.###.######.#.######.###.#',
+             '#O..#.................#..O#',
+             '###.#.#.###########.#.#.###',
+             '#.....#......#......#.....#',
+             '#.##########.#.##########.#',
+             '#.........................#',
+             '###########################'];
   }
   return [];
 };

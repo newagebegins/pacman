@@ -1,6 +1,7 @@
 var GATE_HEIGHT = TILE_SIZE / 4;
 
-function Gate() {
+function Gate(scene) {
+  this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: GATE_HEIGHT});
 }
 
@@ -9,8 +10,11 @@ Gate.prototype.getRect = function () {
 };
 
 Gate.prototype.draw = function (ctx) {
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  
   ctx.fillStyle = "#ffb8de";
-  ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  ctx.fillRect(x, y, this.getWidth(), this.getHeight());
 };
 
 

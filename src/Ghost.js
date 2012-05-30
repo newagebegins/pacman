@@ -210,11 +210,14 @@ Ghost.prototype.runHome = function () {
 };
 
 Ghost.prototype.draw = function (ctx) {
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  
   if (this._state != GHOST_STATE_RUN_HOME) {
-    ctx.drawImage(ImageManager.getImage(this.getCurrentBodyFrame()), this.getX(), this.getY());
+    ctx.drawImage(ImageManager.getImage(this.getCurrentBodyFrame()), x, y);
   }
   if (this._state != GHOST_STATE_VULNERABLE) {
-    ctx.drawImage(ImageManager.getImage(this.getCurrentEyesFrame()), this.getX(), this.getY());
+    ctx.drawImage(ImageManager.getImage(this.getCurrentEyesFrame()), x, y);
   }
 };
 

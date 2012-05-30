@@ -1,4 +1,5 @@
-function PowerPellet() {
+function PowerPellet(scene) {
+  this._scene = scene;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
   this._blinkDuration = 13;
   this._blinkTimer = 0;
@@ -10,7 +11,7 @@ PowerPellet.prototype.getRect = function () {
 };
 
 PowerPellet.prototype.getValue = function () {
-  return 300;
+  return 50;
 };
 
 PowerPellet.prototype.setBlinkDuration = function (duration) {
@@ -34,9 +35,14 @@ PowerPellet.prototype._tickBlinkTimer = function () {
 };
 
 PowerPellet.prototype.draw = function (ctx) {
-  if (this._visible) {
-    ctx.drawImage(ImageManager.getImage('power_pellet'), this.getX(), this.getY());
+  if (!this._visible) {
+    return;
   }
+  
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  
+  ctx.drawImage(ImageManager.getImage('power_pellet'), x, y);
 };
 
 

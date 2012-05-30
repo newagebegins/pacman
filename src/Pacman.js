@@ -104,7 +104,10 @@ Pacman.prototype._handleCollisionsWithGhosts = function () {
 };
 
 Pacman.prototype.draw = function (ctx) {
-  ctx.drawImage(ImageManager.getImage(this.getCurrentFrame()), this.getX(), this.getY());
+  var x = this._scene.getX() + this.getX();
+  var y = this._scene.getY() + this.getY();
+  
+  ctx.drawImage(ImageManager.getImage(this.getCurrentFrame()), x, y);
 };
 
 Pacman.prototype.getCurrentFrame = function () {
