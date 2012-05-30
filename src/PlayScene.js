@@ -103,11 +103,14 @@ PlayScene.prototype.loadMap = function (map) {
   this._pellets = [];
   this._ghosts = [];
   
-  var num_rows = map.length;
-  var num_cols = map[0].length;
+  var numRows = map.length;
+  var numCols = map[0].length;
   
-  for (var row = 0; row < num_rows; ++row) {
-    for (var col = 0; col < num_cols; ++col) {
+  this._mapRows = numRows;
+  this._mapCols = numCols;
+  
+  for (var row = 0; row < numRows; ++row) {
+    for (var col = 0; col < numCols; ++col) {
       var tile = map[row][col];
       var position = new Position(col * TILE_SIZE, row * TILE_SIZE);
       
@@ -162,79 +165,79 @@ PlayScene.prototype.loadMap = function (map) {
 };
 
 PlayScene.prototype._getWallImage = function (map, row, col) {
-  var num_rows = map.length;
-  var num_cols = map[0].length;
-  var last_row = num_rows - 1;
-  var last_col = num_cols - 1;
+  var numRows = map.length;
+  var numCols = map[0].length;
+  var lastRow = numRows - 1;
+  var lastCol = numCols - 1;
   
-  if ((col > 0 && col < last_col) &&
+  if ((col > 0 && col < lastCol) &&
       (map[row][col-1] == '#' && map[row][col+1] == '#') &&
-      ((row == 0 || map[row-1][col] != '#') && (row == last_row || map[row+1][col] != '#'))) {
+      ((row == 0 || map[row-1][col] != '#') && (row == lastRow || map[row+1][col] != '#'))) {
     return 'wall_h';
   }
-  else if ((row > 0 && row < last_row) &&
+  else if ((row > 0 && row < lastRow) &&
       (map[row-1][col] == '#' && map[row+1][col] == '#') &&
-      ((col == 0 || map[row][col-1] != '#') && (col == last_col || map[row][col+1] != '#'))) {
+      ((col == 0 || map[row][col-1] != '#') && (col == lastCol || map[row][col+1] != '#'))) {
     return 'wall_v';
   }
-  else if ((col < last_col && row < last_row) &&
+  else if ((col < lastCol && row < lastRow) &&
       (map[row][col+1] == '#' && map[row+1][col] == '#') &&
       ((col == 0 || map[row][col-1] != '#') && (row == 0 || map[row-1][col] != '#'))) {
     return 'wall_tlc';
   }
-  else if ((col > 0 && row < last_row) &&
+  else if ((col > 0 && row < lastRow) &&
       (map[row][col-1] == '#' && map[row+1][col] == '#') &&
-      ((col == last_col || map[row][col+1] != '#') && (row == 0 || map[row-1][col] != '#'))) {
+      ((col == lastCol || map[row][col+1] != '#') && (row == 0 || map[row-1][col] != '#'))) {
     return 'wall_trc';
   }
-  else if ((col < last_col && row > 0) &&
+  else if ((col < lastCol && row > 0) &&
       (map[row][col+1] == '#' && map[row-1][col] == '#') &&
-      ((col == 0 || map[row][col-1] != '#') && (row == last_row || map[row+1][col] != '#'))) {
+      ((col == 0 || map[row][col-1] != '#') && (row == lastRow || map[row+1][col] != '#'))) {
     return 'wall_blc';
   }
   else if ((col > 0 && row > 0) &&
       (map[row][col-1] == '#' && map[row-1][col] == '#') &&
-      ((col == last_col || map[row][col+1] != '#') && (row == last_row || map[row+1][col] != '#'))) {
+      ((col == lastCol || map[row][col+1] != '#') && (row == lastRow || map[row+1][col] != '#'))) {
     return 'wall_brc';
   }
-  else if ((row < last_row) &&
+  else if ((row < lastRow) &&
       (map[row+1][col] == '#') &&
-      ((row == 0 || map[row-1][col] != '#') && (col == 0 || map[row][col-1] != '#') && (col == last_col || map[row][col+1] != '#'))) {
+      ((row == 0 || map[row-1][col] != '#') && (col == 0 || map[row][col-1] != '#') && (col == lastCol || map[row][col+1] != '#'))) {
     return 'wall_t';
   }
   else if ((row > 0) &&
       (map[row-1][col] == '#') &&
-      ((row == last_row || map[row+1][col] != '#') && (col == 0 || map[row][col-1] != '#') && (col == last_col || map[row][col+1] != '#'))) {
+      ((row == lastRow || map[row+1][col] != '#') && (col == 0 || map[row][col-1] != '#') && (col == lastCol || map[row][col+1] != '#'))) {
     return 'wall_b';
   }
-  else if ((col < last_col) &&
+  else if ((col < lastCol) &&
       (map[row][col+1] == '#') &&
-      ((col == 0 || map[row][col-1] != '#') && (row == 0 || map[row-1][col] != '#') && (row == last_row || map[row+1][col] != '#'))) {
+      ((col == 0 || map[row][col-1] != '#') && (row == 0 || map[row-1][col] != '#') && (row == lastRow || map[row+1][col] != '#'))) {
     return 'wall_l';
   }
   else if ((col > 0) &&
       (map[row][col-1] == '#') &&
-      ((col == last_col || map[row][col+1] != '#') && (row == 0 || map[row-1][col] != '#') && (row == last_row || map[row+1][col] != '#'))) {
+      ((col == lastCol || map[row][col+1] != '#') && (row == 0 || map[row-1][col] != '#') && (row == lastRow || map[row+1][col] != '#'))) {
     return 'wall_r';
   }
-  else if ((col > 0 && col < last_col && row < last_row) &&
+  else if ((col > 0 && col < lastCol && row < lastRow) &&
       (map[row][col-1] == '#' && map[row][col+1] == '#' && map[row+1][col] == '#') &&
       (row == 0 || map[row-1][col] != '#')) {
     return 'wall_mt';
   }
-  else if ((col > 0 && col < last_col && row > 0) &&
+  else if ((col > 0 && col < lastCol && row > 0) &&
       (map[row][col-1] == '#' && map[row][col+1] == '#' && map[row-1][col] == '#') &&
-      (row == last_row || map[row+1][col] != '#')) {
+      (row == lastRow || map[row+1][col] != '#')) {
     return 'wall_mb';
   }
-  else if ((row > 0 && row < last_row && col < last_col) &&
+  else if ((row > 0 && row < lastRow && col < lastCol) &&
       (map[row-1][col] == '#' && map[row+1][col] == '#' && map[row][col+1] == '#') &&
       (col == 0 || map[row][col-1] != '#')) {
     return 'wall_ml';
   }
-  else if ((row > 0 && row < last_row && col > 0) &&
+  else if ((row > 0 && row < lastRow && col > 0) &&
       (map[row-1][col] == '#' && map[row+1][col] == '#' && map[row][col-1] == '#') &&
-      (col == last_col || map[row][col+1] != '#')) {
+      (col == lastCol || map[row][col+1] != '#')) {
     return 'wall_mr';
   }
   
@@ -354,38 +357,14 @@ PlayScene.prototype.pxToCoord = function (px) {
 
 PlayScene.prototype._getEmptyGrid = function () {
   var result = [];
-  var numRows = this._getNumRows();
-  var numCols = this._getNumCols();
-  for (var r = 0; r < numRows; ++r) {
+  for (var r = 0; r < this._mapRows; ++r) {
     var row = [];
-    for (var c = 0; c < numCols; ++c) {
+    for (var c = 0; c < this._mapCols; ++c) {
       row.push(0);
     }
     result.push(row);
   }
   return result;
-};
-
-PlayScene.prototype._getNumRows = function () {
-  var result = -1;
-  for (var i = 0; i < this._walls.length; ++i) {
-    var row = this.pxToCoord(this._walls[i].getY());
-    if (row > result) {
-      result = row;
-    }
-  }
-  return result + 1;
-};
-
-PlayScene.prototype._getNumCols = function () {
-  var result = -1;
-  for (var i = 0; i < this._walls.length; ++i) {
-    var col = this.pxToCoord(this._walls[i].getX());
-    if (col > result) {
-      result = col;
-    }
-  }
-  return result + 1;
 };
 
 PlayScene.prototype.getWallAtTile = function (col, row) {
