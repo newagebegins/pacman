@@ -301,6 +301,31 @@ PlayScene.prototype.makeGhostsVulnerable = function () {
   }
 };
 
+PlayScene.prototype.getWidth = function () {
+  return this._mapCols * TILE_SIZE;
+};
+
+PlayScene.prototype.getHeight = function () {
+  return this._mapRows * TILE_SIZE;
+};
+
+PlayScene.prototype.getLeft = function () {
+  return 0;
+};
+
+PlayScene.prototype.getRight = function () {
+  return this.getWidth() - 1;
+};
+
+
+PlayScene.prototype.getTop = function () {
+  return 0;
+};
+
+PlayScene.prototype.getBottom = function () {
+  return this.getHeight() - 1;
+};
+
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
     return  ['###########################',
@@ -314,7 +339,7 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '########.### # ###.########',
              '       #.#   1   #.#       ',
              '########.# ##-## #.########',
-             '#       .  #234#  .       #',
+             '        .  #234#  .        ',
              '########.# ##### #.########',
              '       #.#   C   #.#       ',
              '########.# ##### #.########',

@@ -38,7 +38,9 @@ Ghost.prototype.tick = function () {
   if (this._scene.getReadyMessage().isVisible()) {
     return;
   }
+  
   this._advanceBodyFrame();
+  
   if (this._state == GHOST_STATE_VULNERABLE) {
     this._advanceVulnerableStateTimers();
     
@@ -46,6 +48,7 @@ Ghost.prototype.tick = function () {
       this.makeNormal();
     }
   }
+  
   if (this._state == GHOST_STATE_RUN_HOME) {
     if (this.getPosition().equals(this._scene.getLairPosition())) {
       this.makeNormal();

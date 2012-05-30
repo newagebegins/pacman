@@ -156,6 +156,24 @@ describe("PlayScene", function () {
       expect(scene.getWallAtTile(1, 1)).toBeNull();
     });
   });
+  
+  it("should know its boundaries", function () {
+    var map = ['###',
+               '# #',
+               '# #',
+               '###'];
+    scene.loadMap(map);
+    
+    var WIDTH = 3 * TILE_SIZE;
+    var HEIGHT = 4 * TILE_SIZE;
+    
+    expect(scene.getWidth()).toEqual(WIDTH);
+    expect(scene.getHeight()).toEqual(HEIGHT);
+    expect(scene.getLeft()).toEqual(0);
+    expect(scene.getRight()).toEqual(WIDTH - 1);
+    expect(scene.getTop()).toEqual(0);
+    expect(scene.getBottom()).toEqual(HEIGHT - 1);
+  });
 });
 
 describe("When Play scene is just started", function () {
@@ -979,5 +997,132 @@ describe("When Ghost is Vulnerable", function () {
     expect(ghost.getVulnerableTimeLeft()).toEqual(0);
     expect(ghost.getState()).toEqual(GHOST_STATE_NORMAL);
     expect(ghost.isBlink()).toEqual(false);
+  });
+});
+
+describe("When Pacman goes off the map", function () {
+  describe("it should appear from the opposite site of the map", function () {
+    var game, scene, pacman;
+    
+    beforeEach(function () {
+      game = new Game();
+      scene = new PlayScene(game);
+      game.setScene(scene);
+      scene.getReadyMessage().hide();
+      pacman = scene.getPacman();
+    });
+    
+    it("right", function () {
+      var map = ['#####',
+                 '    C',
+                 '#####'];
+      scene.loadMap(map);
+      pacman.requestNewDirection(DIRECTION_RIGHT);
+
+      expect(pacman.getPosition()).toEqual(new Position(4 * TILE_SIZE, TILE_SIZE));
+      game.tick();
+      expect(pacman.getPosition()).toEqual(new Position(0, TILE_SIZE));
+    });
+    
+    it("left", function () {
+      var map = ['#####',
+                 'C    ',
+                 '#####'];
+      scene.loadMap(map);
+      pacman.requestNewDirection(DIRECTION_LEFT);
+
+      expect(pacman.getPosition()).toEqual(new Position(0, TILE_SIZE));
+      game.tick();
+      expect(pacman.getPosition()).toEqual(new Position(4 * TILE_SIZE, TILE_SIZE));
+    });
+    
+    it("up", function () {
+      var map = ['#C#',
+                 '# #',
+                 '# #'];
+      scene.loadMap(map);
+      pacman.requestNewDirection(DIRECTION_UP);
+
+      expect(pacman.getPosition()).toEqual(new Position(TILE_SIZE, 0));
+      game.tick();
+      expect(pacman.getPosition()).toEqual(new Position(TILE_SIZE, 2 * TILE_SIZE));
+    });
+    
+    it("down", function () {
+      var map = ['# #',
+                 '# #',
+                 '#C#'];
+      scene.loadMap(map);
+      pacman.requestNewDirection(DIRECTION_DOWN);
+
+      expect(pacman.getPosition()).toEqual(new Position(TILE_SIZE, 2 * TILE_SIZE));
+      game.tick();
+      expect(pacman.getPosition()).toEqual(new Position(TILE_SIZE, 0));
+    });
+  });
+});
+
+describe("When Ghost goes off the map", function () {
+  describe("it should appear from the opposite site of the map", function () {
+    var game, scene;
+    
+    beforeEach(function () {
+      game = new Game();
+      scene = new PlayScene(game);
+      game.setScene(scene);
+      scene.getReadyMessage().hide();
+    });
+    
+    it("right", function () {
+      var map = ['#####',
+                 '    1',
+                 '#####'];
+      scene.loadMap(map);
+      var ghost = scene.getGhosts()[0];
+      ghost.setDirection(DIRECTION_RIGHT);
+
+      expect(ghost.getPosition()).toEqual(new Position(4 * TILE_SIZE, TILE_SIZE));
+      game.tick();
+      expect(ghost.getPosition()).toEqual(new Position(0, TILE_SIZE));
+    });
+    
+    it("left", function () {
+      var map = ['#####',
+                 '1    ',
+                 '#####'];
+      scene.loadMap(map);
+      var ghost = scene.getGhosts()[0];
+      ghost.setDirection(DIRECTION_LEFT);
+
+      expect(ghost.getPosition()).toEqual(new Position(0, TILE_SIZE));
+      game.tick();
+      expect(ghost.getPosition()).toEqual(new Position(4 * TILE_SIZE, TILE_SIZE));
+    });
+    
+    it("up", function () {
+      var map = ['#1#',
+                 '# #',
+                 '# #'];
+      scene.loadMap(map);
+      var ghost = scene.getGhosts()[0];
+      ghost.setDirection(DIRECTION_UP);
+
+      expect(ghost.getPosition()).toEqual(new Position(TILE_SIZE, 0));
+      game.tick();
+      expect(ghost.getPosition()).toEqual(new Position(TILE_SIZE, 2 * TILE_SIZE));
+    });
+    
+    it("down", function () {
+      var map = ['# #',
+                 '# #',
+                 '#1#'];
+      scene.loadMap(map);
+      var ghost = scene.getGhosts()[0];
+      ghost.setDirection(DIRECTION_DOWN);
+
+      expect(ghost.getPosition()).toEqual(new Position(TILE_SIZE, 2 * TILE_SIZE));
+      game.tick();
+      expect(ghost.getPosition()).toEqual(new Position(TILE_SIZE, 0));
+    });
   });
 });
