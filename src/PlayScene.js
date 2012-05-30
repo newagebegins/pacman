@@ -79,7 +79,7 @@ PlayScene.prototype.loadMap = function (map) {
   for (var row = 0; row < map.length; ++row) {
     for (var col = 0; col < map[row].length; ++col) {
       var tile = map[row][col];
-      var position = {x: col * TILE_SIZE, y: row * TILE_SIZE};
+      var position = new Position(col * TILE_SIZE, row * TILE_SIZE);
       
       if (tile == '#') {
         var wall = new Wall();
@@ -101,7 +101,7 @@ PlayScene.prototype.loadMap = function (map) {
         this._pellets.push(powerPellet);
       }
       else if (tile == '-') {
-        this._lairPosition = {x: position.x, y: position.y + TILE_SIZE};
+        this._lairPosition = new Position(position.x, position.y + TILE_SIZE);
           
         var gate = new Gate();
         position.y += (TILE_SIZE - GATE_HEIGHT) / 2 + 1;
@@ -206,4 +206,65 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '#############################'];
   }
   return [];
+};
+
+PlayScene.prototype.getWaypointsToLairForGhost = function (ghost) {
+  var result = [];
+  var from = [this.pxToCoord(ghost.getX()), this.pxToCoord(ghost.getY())];
+  var to = [this.pxToCoord(this._lairPosition.x), this.pxToCoord(this._lairPosition.y)];
+  var wayPoints = AStar(this._getGrid(), from, to);
+  for (var wp in wayPoints) {
+    result.push(new Position(wayPoints[wp][0] * TILE_SIZE, wayPoints[wp][1] * TILE_SIZE));
+  }
+  return result;
+};
+
+PlayScene.prototype._getGrid = function () {
+  var result = this._getEmptyGrid();
+  for (var i = 0; i < this._walls.length; ++i) {
+    var row = this.pxToCoord(this._walls[i].getY());
+    var col = this.pxToCoord(this._walls[i].getX());
+    result[row][col] = 1;
+  }
+  return result;
+};
+
+PlayScene.prototype.pxToCoord = function (px) {
+  return Math.floor(px / TILE_SIZE);
+};
+
+PlayScene.prototype._getEmptyGrid = function () {
+  var result = [];
+  var numRows = this._getNumRows();
+  var numCols = this._getNumCols();
+  for (var r = 0; r < numRows; ++r) {
+    var row = [];
+    for (var c = 0; c < numCols; ++c) {
+      row.push(0);
+    }
+    result.push(row);
+  }
+  return result;
+};
+
+PlayScene.prototype._getNumRows = function () {
+  var result = -1;
+  for (var i = 0; i < this._walls.length; ++i) {
+    var row = this.pxToCoord(this._walls[i].getY());
+    if (row > result) {
+      result = row;
+    }
+  }
+  return result + 1;
+};
+
+PlayScene.prototype._getNumCols = function () {
+  var result = -1;
+  for (var i = 0; i < this._walls.length; ++i) {
+    var col = this.pxToCoord(this._walls[i].getX());
+    if (col > result) {
+      result = col;
+    }
+  }
+  return result + 1;
 };

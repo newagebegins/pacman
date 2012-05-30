@@ -11,7 +11,7 @@ Rect.prototype.setPosition = function (position) {
 };
 
 Rect.prototype.getPosition = function () {
-  return {x: this._x, y: this._y};
+  return new Position(this._x, this._y);
 };
 
 Rect.prototype.getX = function () {

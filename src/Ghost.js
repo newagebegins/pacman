@@ -24,9 +24,42 @@ Ghost.prototype.tick = function () {
   if (this._scene.getReadyMessage().isVisible()) {
     return;
   }
-  this._tryTurnCorner();
-  this._sprite.move(this.getDirection());
-  this._handleCollisionsWithWalls();
+  if (this._state == GHOST_STATE_RUN_HOME) {
+    if (this.getPosition().equals(this._scene.getLairPosition())) {
+      this._state = GHOST_STATE_NORMAL;
+      this._sprite.setDirection(DIRECTION_UP);
+      return;
+    }
+    if (this.getPosition().equals(this._currentWaypoint)) {
+      this._currentWaypoint = this._wayPoints.shift();
+      this._setDirectionToCurrentWaypoint();
+    }
+    this._sprite.move(this.getDirection());
+  }
+  else {
+    this._tryTurnCorner();
+    this._sprite.move(this.getDirection());
+    this._handleCollisionsWithWalls();
+  }
+};
+
+Ghost.prototype._setDirectionToCurrentWaypoint = function () {
+  if (this._currentWaypoint.x == this.getX()) {
+    if (this._currentWaypoint.y > this.getY()) {
+      this._sprite.setDirection(DIRECTION_DOWN);
+    }
+    else {
+      this._sprite.setDirection(DIRECTION_UP);
+    }
+  }
+  else {
+    if (this._currentWaypoint.x > this.getX()) {
+      this._sprite.setDirection(DIRECTION_RIGHT);
+    }
+    else {
+      this._sprite.setDirection(DIRECTION_LEFT);
+    }
+  }
 };
 
 Ghost.prototype._tryTurnCorner = function () {
@@ -90,11 +123,16 @@ Ghost.prototype.getState = function () {
 };
 
 Ghost.prototype.makeVulnerable = function () {
-  this._state = GHOST_STATE_VULNERABLE;
+  if (this._state == GHOST_STATE_NORMAL) {
+    this._state = GHOST_STATE_VULNERABLE;
+  }
 };
 
 Ghost.prototype.runHome = function () {
   this._state = GHOST_STATE_RUN_HOME;
+  this._wayPoints = this._scene.getWaypointsToLairForGhost(this);
+  this._currentWaypoint = this._wayPoints.shift();
+  this.setPosition(this._currentWaypoint);
 };
 
 Ghost.prototype.draw = function (ctx) {
@@ -130,8 +168,16 @@ Ghost.prototype.getRect = function () {
   return this._sprite.getRect();
 };
 
+Ghost.prototype.setDirection = function (direction) {
+  return this._sprite.setDirection(direction);
+};
+
 Ghost.prototype.getDirection = function () {
   return this._sprite.getDirection();
+};
+
+Ghost.prototype.setSpeed = function (speed) {
+  this._sprite.setSpeed(speed);
 };
 
 Ghost.prototype.setCurrentSpeed = function (speed) {
