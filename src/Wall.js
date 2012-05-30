@@ -12,7 +12,6 @@ Wall.prototype.getImage = function () {
 };
 
 Wall.prototype.draw = function (ctx) {
-  if (!this._image) return;
   ctx.drawImage(ImageManager.getImage(this._image), this.getX(), this.getY());
 };
 

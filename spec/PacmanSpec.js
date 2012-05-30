@@ -274,7 +274,7 @@ describe("ReadyMessage", function () {
   });
 });
 
-describe("Pacman", function () {
+describe("Pacman movement", function () {
   var SPEED = 2;
   var game, playScene, pacman, INIT_X, INIT_Y;
   
@@ -282,11 +282,15 @@ describe("Pacman", function () {
     game = new Game();
     playScene = new PlayScene(game);
     game.setScene(playScene);
-    var map = ['#####',
-               '## ##',
-               '# C #',
-               '## ##',
-               '#####'];
+    var map = ['    ###    ',
+               '    # #    ',
+               '    # #    ',
+               '##### #####',
+               '#    C    #',
+               '##### #####',
+               '    # #    ',
+               '    # #    ',
+               '    ###    '];
     playScene.loadMap(map);
     playScene.getReadyMessage().hide();
     pacman = playScene.getPacman();
@@ -317,6 +321,88 @@ describe("Pacman", function () {
     game.keyPressed(KEY_DOWN);
     game.tick();
     expect(pacman.getPosition()).toEqual(new Position(INIT_X, INIT_Y + SPEED));
+  });
+});
+
+describe("Pacman animation", function () {
+  var game, playScene, pacman, INIT_X, INIT_Y;
+  
+  beforeEach(function () {
+    game = new Game();
+    playScene = new PlayScene(game);
+    game.setScene(playScene);
+    var map = ['    ###    ',
+               '    # #    ',
+               '    # #    ',
+               '##### #####',
+               '#    C    #',
+               '##### #####',
+               '    # #    ',
+               '    # #    ',
+               '    ###    '];
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+    pacman = playScene.getPacman();
+  });
+  
+  it("move right", function () {
+    game.keyPressed(KEY_RIGHT);
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2r');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_3r');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2r');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2r');
+  });
+  
+  it("move left", function () {
+    game.keyPressed(KEY_LEFT);
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2l');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_3l');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2l');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2l');
+  });
+  
+  it("move up", function () {
+    game.keyPressed(KEY_UP);
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2u');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_3u');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2u');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2u');
+  });
+  
+  it("move up", function () {
+    game.keyPressed(KEY_DOWN);
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2d');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_3d');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2d');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    game.tick();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_2d');
   });
 });
 

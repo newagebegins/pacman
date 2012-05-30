@@ -1,7 +1,7 @@
-var DIRECTION_RIGHT = 'right';
-var DIRECTION_LEFT = 'left';
-var DIRECTION_UP = 'up';
-var DIRECTION_DOWN = 'down';
+var DIRECTION_RIGHT = 'r';
+var DIRECTION_LEFT = 'l';
+var DIRECTION_UP = 'u';
+var DIRECTION_DOWN = 'd';
 
 function Sprite(scene) {
   this._scene = scene;

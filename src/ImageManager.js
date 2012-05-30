@@ -9,7 +9,16 @@ var ImageManager = (function() {
     wall_t: null,
     wall_b: null,
     wall_l: null,
-    wall_r: null
+    wall_r: null,
+    pacman_1: null,
+    pacman_2l: null,
+    pacman_3l: null,
+    pacman_2r: null,
+    pacman_3r: null,
+    pacman_2u: null,
+    pacman_3u: null,
+    pacman_2d: null,
+    pacman_3d: null
   };
   
   for (var i in images) {
