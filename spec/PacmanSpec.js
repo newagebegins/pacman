@@ -498,7 +498,7 @@ describe("When Pacman touches a ghost", function () {
   var map = ['###########',
              '#C  1     #',
              '# ##### #-#',
-             '#       # #',
+             '# 23    # #',
              '###########']
   var game, playScene, pacman, ghost;
 
@@ -537,6 +537,16 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
       game.tick();
       expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
+    });
+    
+    it("Ghosts should be in Normal state", function () {
+      var ghostVulnerable = playScene.getGhosts()[1];
+      ghostVulnerable.makeVulnerable();
+      var ghostRunHome = playScene.getGhosts()[2];
+      ghostRunHome.runHome();
+      game.tick();
+      expect(ghostVulnerable.getState()).toEqual(GHOST_STATE_NORMAL);
+      expect(ghostRunHome.getState()).toEqual(GHOST_STATE_NORMAL);
     });
   });
   

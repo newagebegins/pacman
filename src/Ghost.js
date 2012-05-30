@@ -237,5 +237,6 @@ Ghost.prototype.getStartPosition = function () {
 };
 
 Ghost.prototype.placeToStartPosition = function () {
+  this._state = GHOST_STATE_NORMAL;
   this._sprite.placeToStartPosition();
 };
