@@ -1,4 +1,4 @@
-var TILE_SIZE = 10;
+var TILE_SIZE = 16;
 
 function PlayScene(game) {
   this._game = game;
@@ -8,7 +8,7 @@ function PlayScene(game) {
   this._readyMessage.show();
   
   this._pacman = new Pacman(this);
-  this._pacman.setSpeed(2);
+  this._pacman.setSpeed(4);
   this._pacman.requestNewDirection(DIRECTION_RIGHT);
   
   this._currentLevel = 1;
@@ -31,7 +31,6 @@ PlayScene.prototype.tick = function () {
 };
 
 PlayScene.prototype.draw = function (ctx) {
-  this._readyMessage.draw(ctx);
   this._pacman.draw(ctx);
   
   for (var wall in this._walls) {
@@ -48,6 +47,7 @@ PlayScene.prototype.draw = function (ctx) {
   
   this._gate.draw(ctx);
   this._drawScore(ctx);
+  this._readyMessage.draw(ctx);
 };
 
 PlayScene.prototype._drawScore = function (ctx) {

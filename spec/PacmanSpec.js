@@ -626,15 +626,15 @@ describe("When vulnerable ghost collides with Pacman", function () {
       var scene = new PlayScene(game);
       game.setScene(scene);
       var map = ['#############################',
-                '#                           #',
-                '# #### ###### ###### #### # #',
-                '# #  # #           # #  # # #',
-                '# #  #1# # ##-## # # #  # # #',
-                '# ####C# # #   # # # #### # #',
-                '#        # ##### #          #',
-                '# ######## ##### ########## #',
-                '#                           #',
-                '#############################'];
+                 '#                           #',
+                 '# #### ###### ###### #### # #',
+                 '# #  # #           # #  # # #',
+                 '# #  #1# # ##-## # # #  # # #',
+                 '# ####C# # #   # # # #### # #',
+                 '#        # ##### #          #',
+                 '# ######## ##### ########## #',
+                 '#                           #',
+                 '#############################'];
       scene.loadMap(map);
       scene.getReadyMessage().hide();
 
@@ -650,7 +650,7 @@ describe("When vulnerable ghost collides with Pacman", function () {
 
       expect(ghost.getState()).toEqual(GHOST_STATE_RUN_HOME);
 
-      for (var i = 0; i <= 70; i++) {
+      for (var i = 0; i <= 55; i++) {
         game.tick();
       }
 

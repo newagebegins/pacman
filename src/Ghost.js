@@ -12,7 +12,7 @@ function Ghost(name, scene) {
   this._scene = scene;
   this._sprite = new Sprite(scene);
   this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
-  this._sprite.setCurrentSpeed(2);
+  this._sprite.setCurrentSpeed(4);
   this._state = GHOST_STATE_NORMAL;
 }
 
