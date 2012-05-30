@@ -1,4 +1,5 @@
-function Wall() {
+function Wall(image) {
+  this._image = image;
   this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
 }
 
@@ -6,9 +7,13 @@ Wall.prototype.getRect = function () {
   return this._rect;
 };
 
+Wall.prototype.getImage = function () {
+  return this._image;
+};
+
 Wall.prototype.draw = function (ctx) {
-  ctx.fillStyle = "blue";
-  ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  if (!this._image) return;
+  ctx.drawImage(ImageManager.getImage(this._image), this.getX(), this.getY());
 };
 
 

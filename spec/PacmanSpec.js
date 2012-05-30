@@ -41,22 +41,22 @@ describe("Game", function () {
 });
 
 describe("PlayScene", function () {
-  var game, playScene;
+  var game, scene;
   
   beforeEach(function () {
     game = new Game();
-    playScene = new PlayScene(game);
-    game.setScene(playScene);
+    scene = new PlayScene(game);
+    game.setScene(scene);
   });
   
   describe("constructor", function () {
     it("should initialize Ready message", function () {
-      var readyMessage = playScene.getReadyMessage();
+      var readyMessage = scene.getReadyMessage();
       expect(readyMessage.getTimeToHide()).toBeGreaterThan(0);
     });
     
     it("should initialize Pacman", function () {
-      var pacman = playScene.getPacman();
+      var pacman = scene.getPacman();
       expect(pacman.getCurrentSpeed()).toBeGreaterThan(0);
       expect(pacman.getDirection()).toBeDefined();
     });
@@ -67,30 +67,84 @@ describe("PlayScene", function () {
       var map = ['# .-1234',
                  '#C# OO  ',
                  '##.     '];
-      playScene.loadMap(map);
+      scene.loadMap(map);
       
-      var walls = playScene.getWalls();
+      var walls = scene.getWalls();
       expect(walls.length).toEqual(5);
       expect(walls[0].getPosition()).toEqual(new Position(0, 0));
       expect(walls[1].getPosition()).toEqual(new Position(0, TILE_SIZE));
       expect(walls[2].getPosition()).toEqual(new Position(TILE_SIZE * 2, TILE_SIZE));
       
-      expect(playScene.getPacman().getStartPosition()).toEqual(new Position(TILE_SIZE, TILE_SIZE));
+      expect(scene.getPacman().getStartPosition()).toEqual(new Position(TILE_SIZE, TILE_SIZE));
       
-      var pellets = playScene.getPellets();
+      var pellets = scene.getPellets();
       expect(pellets.length).toEqual(4);
       expect(pellets[0] instanceof Pellet).toBeTruthy();
       expect(pellets[1] instanceof PowerPellet).toBeTruthy();
       
-      expect(playScene.getGate() instanceof Gate).toBeTruthy();
-      expect(playScene.getLairPosition()).toEqual(new Position(3 * TILE_SIZE ,TILE_SIZE));
+      expect(scene.getGate() instanceof Gate).toBeTruthy();
+      expect(scene.getLairPosition()).toEqual(new Position(3 * TILE_SIZE ,TILE_SIZE));
       
-      var ghosts = playScene.getGhosts();
+      var ghosts = scene.getGhosts();
       expect(ghosts.length).toEqual(4);
       expect(ghosts[0].getName()).toEqual(GHOST_BLINKY);
       expect(ghosts[1].getName()).toEqual(GHOST_PINKY);
       expect(ghosts[2].getName()).toEqual(GHOST_INKY);
       expect(ghosts[3].getName()).toEqual(GHOST_CLYDE);
+    });
+    
+    it("should identify and set wall images", function () {
+      var map = ['################# ####',
+                 '#               ###  #',
+                 '#  ###  #   ###     ##',
+                 '##  #  ###  # # #   # ',
+                 ' #  #   #   ### #   ##',
+                 '## ###          #    #',
+                 '#       ###          #',
+                 '######### ############'];
+      scene.loadMap(map);
+      
+      expect(scene.getWallAtTile(0, 0).getImage()).toEqual('wall_tlc');
+      expect(scene.getWallAtTile(12, 2).getImage()).toEqual('wall_tlc');
+      
+      expect(scene.getWallAtTile(21, 0).getImage()).toEqual('wall_trc');
+      expect(scene.getWallAtTile(14, 2).getImage()).toEqual('wall_trc');
+      
+      expect(scene.getWallAtTile(0, 7).getImage()).toEqual('wall_blc');
+      expect(scene.getWallAtTile(12, 4).getImage()).toEqual('wall_blc');
+      expect(scene.getWallAtTile(10, 7).getImage()).toEqual('wall_blc');
+      expect(scene.getWallAtTile(0, 3).getImage()).toEqual('wall_blc');
+      
+      expect(scene.getWallAtTile(21, 7).getImage()).toEqual('wall_brc');
+      expect(scene.getWallAtTile(14, 4).getImage()).toEqual('wall_brc');
+      expect(scene.getWallAtTile(8, 7).getImage()).toEqual('wall_brc');
+      
+      expect(scene.getWallAtTile(1, 0).getImage()).toEqual('wall_h');
+      expect(scene.getWallAtTile(1, 7).getImage()).toEqual('wall_h');
+      expect(scene.getWallAtTile(13, 4).getImage()).toEqual('wall_h');
+      
+      expect(scene.getWallAtTile(0, 1).getImage()).toEqual('wall_v');
+      expect(scene.getWallAtTile(21, 1).getImage()).toEqual('wall_v');
+      expect(scene.getWallAtTile(14, 3).getImage()).toEqual('wall_v');
+      
+      expect(scene.getWallAtTile(8, 2).getImage()).toEqual('wall_t');
+      expect(scene.getWallAtTile(8, 4).getImage()).toEqual('wall_b');
+      expect(scene.getWallAtTile(7, 3).getImage()).toEqual('wall_l');
+      expect(scene.getWallAtTile(9, 3).getImage()).toEqual('wall_r');
+    });
+  });
+  
+  describe("#getWallAtTile", function () {
+    it("should return a wall located at a requested tile", function () {
+      var map = ['###',
+                 '#  ',
+                 '###'];
+      scene.loadMap(map);
+      
+      expect(scene.getWallAtTile(0, 0).getPosition()).toEqual(new Position(0, 0));
+      expect(scene.getWallAtTile(1, 0).getPosition()).toEqual(new Position(TILE_SIZE, 0));
+      expect(scene.getWallAtTile(0, 1).getPosition()).toEqual(new Position(0, TILE_SIZE));
+      expect(scene.getWallAtTile(1, 1)).toBeNull();
     });
   });
 });
