@@ -564,6 +564,12 @@ describe("When Pacman collides with a power pellet", function () {
     expect(ghostNormal.getState()).toEqual(GHOST_STATE_VULNERABLE);
     expect(ghostRunHome.getState()).toEqual(GHOST_STATE_RUN_HOME);
   });
+  
+  it("vulnareble ghosts should move slowly", function () {
+    expect(ghostNormal.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
+    game.tick();
+    expect(ghostNormal.getCurrentSpeed()).toEqual(GHOST_SPEED_SLOW);
+  });
 });
 
 describe("Ghost", function () {
@@ -634,6 +640,57 @@ describe("Ghost", function () {
   });
 });
 
+describe("Ghost animation", function () {
+  var map = ['###########',
+             '#  1      #',
+             '# #### ## #',
+             '# #  #  # #',
+             '# #### ## #',
+             '#         #',
+             '###########'];
+  var game, scene;
+  
+  beforeEach(function () {
+    game = new Game();
+    scene = new PlayScene(game);
+    game.setScene(scene);
+    scene.loadMap(map);
+    scene.getReadyMessage().hide();
+  });
+  
+  it("blinky", function () {
+    var blinky = scene.getGhosts()[0];
+    
+    blinky.setDirection(DIRECTION_RIGHT);
+
+    expect(blinky.getCurrentBodyFrame()).toEqual('blinky_1');
+    expect(blinky.getCurrentEyesFrame()).toEqual('eyes_r');
+    game.tick();
+    expect(blinky.getCurrentBodyFrame()).toEqual('blinky_2');
+    expect(blinky.getCurrentEyesFrame()).toEqual('eyes_r');
+    game.tick();
+    expect(blinky.getCurrentBodyFrame()).toEqual('blinky_1');
+    expect(blinky.getCurrentEyesFrame()).toEqual('eyes_r');
+
+    blinky.setDirection(DIRECTION_LEFT);
+    
+    game.tick();
+    expect(blinky.getCurrentBodyFrame()).toEqual('blinky_2');
+    expect(blinky.getCurrentEyesFrame()).toEqual('eyes_l');
+  });
+  
+  it("vulnerable ghost", function () {
+    var ghost = scene.getGhosts()[0];
+    ghost.makeVulnerable();
+    
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+    game.tick();
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2');
+    game.tick();
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+  });
+});
+
 describe("When Pacman touches a ghost", function () {
   var map = ['###########',
              '#C  1     #',
@@ -679,7 +736,7 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
     });
     
-    it("Ghosts should be in Normal state", function () {
+    it("Ghosts should be in Normal state and have normal speed", function () {
       var ghostVulnerable = playScene.getGhosts()[1];
       ghostVulnerable.makeVulnerable();
       var ghostRunHome = playScene.getGhosts()[2];
@@ -687,6 +744,8 @@ describe("When Pacman touches a ghost", function () {
       game.tick();
       expect(ghostVulnerable.getState()).toEqual(GHOST_STATE_NORMAL);
       expect(ghostRunHome.getState()).toEqual(GHOST_STATE_NORMAL);
+      expect(ghostVulnerable.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
+      expect(ghostRunHome.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
     });
   });
   
@@ -699,6 +758,12 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getState()).toEqual(GHOST_STATE_VULNERABLE);
       game.tick();
       expect(ghost.getState()).toEqual(GHOST_STATE_RUN_HOME);
+    });
+    
+    it("ghost's speed should increase", function () {
+      expect(ghost.getCurrentSpeed()).toEqual(GHOST_SPEED_SLOW);
+      game.tick();
+      expect(ghost.getCurrentSpeed()).toEqual(GHOST_SPEED_FAST);
     });
   });
 });
@@ -720,9 +785,8 @@ describe("When ghost is in Run Home state", function () {
     scene.getReadyMessage().hide();
     
     var ghost = scene.getGhosts()[0];
-    ghost.setSpeed(TILE_SIZE);
-    ghost.setCurrentSpeed(TILE_SIZE);
     ghost.runHome();
+    ghost.setCurrentSpeed(TILE_SIZE);
     
     expect(ghost.getPosition()).toEqual(new Position(9 * TILE_SIZE, 5 * TILE_SIZE));
     game.tick();
@@ -756,6 +820,7 @@ describe("When ghost is in Run Home state", function () {
     game.tick();
     expect(ghost.getState()).toEqual(GHOST_STATE_NORMAL);
     expect(ghost.getDirection()).toEqual(DIRECTION_UP);
+    expect(ghost.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
   });
 });
 

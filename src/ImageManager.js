@@ -10,6 +10,7 @@ var ImageManager = (function() {
     wall_b: null,
     wall_l: null,
     wall_r: null,
+    
     pacman_1: null,
     pacman_2l: null,
     pacman_3l: null,
@@ -18,7 +19,27 @@ var ImageManager = (function() {
     pacman_2u: null,
     pacman_3u: null,
     pacman_2d: null,
-    pacman_3d: null
+    pacman_3d: null,
+    
+    blinky_1: null,
+    blinky_2: null,
+    
+    pinky_1: null,
+    pinky_2: null,
+    
+    inky_1: null,
+    inky_2: null,
+    
+    clyde_1: null,
+    clyde_2: null,
+    
+    vulnerable_1: null,
+    vulnerable_2: null,
+    
+    eyes_l: null,
+    eyes_r: null,
+    eyes_u: null,
+    eyes_d: null
   };
   
   for (var i in images) {
