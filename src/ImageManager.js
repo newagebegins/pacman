@@ -39,7 +39,10 @@ var ImageManager = (function() {
     eyes_l: null,
     eyes_r: null,
     eyes_u: null,
-    eyes_d: null
+    eyes_d: null,
+    
+    pellet: null,
+    power_pellet: null
   };
   
   for (var i in images) {

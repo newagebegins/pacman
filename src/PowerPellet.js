@@ -1,7 +1,5 @@
-var POWER_PELLET_SIZE = TILE_SIZE / 2;
-
 function PowerPellet() {
-  this._rect = new Rect({x: 0, y: 0, w: POWER_PELLET_SIZE, h: POWER_PELLET_SIZE});
+  this._rect = new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE});
 }
 
 PowerPellet.prototype.getRect = function () {
@@ -13,8 +11,7 @@ PowerPellet.prototype.getValue = function () {
 };
 
 PowerPellet.prototype.draw = function (ctx) {
-  ctx.fillStyle = "white";
-  ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  ctx.drawImage(ImageManager.getImage('power_pellet'), this.getX(), this.getY());
 };
 
 

@@ -91,15 +91,11 @@ PlayScene.prototype.loadMap = function (map) {
       }
       else if (tile == '.') {
         var pellet = new Pellet();
-        position.x += (TILE_SIZE - NORMAL_PELLET_SIZE) / 2 + 1;
-        position.y += (TILE_SIZE - NORMAL_PELLET_SIZE) / 2 + 1;
         pellet.setPosition(position);
         this._pellets.push(pellet);
       }
       else if (tile == 'O') {
         var powerPellet = new PowerPellet();
-        position.x += (TILE_SIZE - POWER_PELLET_SIZE) / 2 + 1;
-        position.y += (TILE_SIZE - POWER_PELLET_SIZE) / 2 + 1;
         powerPellet.setPosition(position);
         this._pellets.push(powerPellet);
       }

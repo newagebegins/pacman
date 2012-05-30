@@ -13,8 +13,7 @@ Pellet.prototype.getValue = function () {
 };
 
 Pellet.prototype.draw = function (ctx) {
-  ctx.fillStyle = "white";
-  ctx.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+  ctx.drawImage(ImageManager.getImage('pellet'), this.getX(), this.getY());
 };
 
 
