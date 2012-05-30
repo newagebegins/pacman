@@ -908,3 +908,67 @@ describe("Power pellet", function () {
     expect(powerPellet.isVisible()).toBeTruthy();
   });
 });
+
+describe("When Ghost is Vulnerable", function () {
+  it("it should become Normal after a certain amount of time", function () {
+    var game = new Game();
+    var scene = new PlayScene(game);
+    game.setScene(scene);
+    var map = ['#####',
+               '#1  #',
+               '# # #',
+               '#   #',
+               '#####'];
+    scene.loadMap(map);
+    scene.getReadyMessage().hide();
+    var ghost = scene.getGhosts()[0];
+    ghost.setVulnerabilityDuration(10);
+    ghost.setFlashingDuration(5);
+    ghost.setBlinkDuration(2);
+    ghost.makeVulnerable();
+    
+    expect(ghost.getVulnerableTimeLeft()).toEqual(10);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(9);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(8);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(7);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(6);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(5);
+    expect(ghost.isBlink()).toEqual(true);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2b');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(4);
+    expect(ghost.isBlink()).toEqual(true);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1b');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(3);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(2);
+    expect(ghost.isBlink()).toEqual(false);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_1');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(1);
+    expect(ghost.isBlink()).toEqual(true);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2b');
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(0);
+    expect(ghost.getState()).toEqual(GHOST_STATE_NORMAL);
+    expect(ghost.isBlink()).toEqual(false);
+  });
+});

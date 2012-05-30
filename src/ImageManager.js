@@ -35,6 +35,8 @@ var ImageManager = (function() {
     
     vulnerable_1: null,
     vulnerable_2: null,
+    vulnerable_1b: null,
+    vulnerable_2b: null,
     
     eyes_l: null,
     eyes_r: null,

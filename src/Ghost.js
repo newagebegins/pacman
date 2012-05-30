@@ -21,6 +21,13 @@ function Ghost(name, scene) {
   
   this._bodyFrames = [1,2];
   this._bodyFrame = 0;
+  
+  this._vulnerabilityDuration = 150;
+  this._flashingDuration = 50;
+  this._blinkDuration = 7;
+  this._blinkTimer = 0;
+  this._vulnerableTimeLeft = 0;
+  this._blink = false;
 }
 
 Ghost.prototype.getName = function () {
@@ -32,6 +39,13 @@ Ghost.prototype.tick = function () {
     return;
   }
   this._advanceBodyFrame();
+  if (this._state == GHOST_STATE_VULNERABLE) {
+    this._advanceVulnerableStateTimers();
+    
+    if (this._vulnerableTimeLeft == 0) {
+      this.makeNormal();
+    }
+  }
   if (this._state == GHOST_STATE_RUN_HOME) {
     if (this.getPosition().equals(this._scene.getLairPosition())) {
       this.makeNormal();
@@ -140,12 +154,50 @@ Ghost.prototype.getState = function () {
 Ghost.prototype.makeNormal = function () {
   this._state = GHOST_STATE_NORMAL;
   this.setCurrentSpeed(GHOST_SPEED_NORMAL);
+  this._blink = false;
+};
+
+Ghost.prototype.setVulnerabilityDuration = function (duration) {
+  this._vulnerabilityDuration = duration;
+};
+
+Ghost.prototype.setFlashingDuration = function (duration) {
+  this._flashingDuration = duration;
+};
+
+Ghost.prototype.setBlinkDuration = function (duration) {
+  this._blinkDuration = duration;
+};
+
+Ghost.prototype.getVulnerableTimeLeft = function () {
+  return this._vulnerableTimeLeft;
+};
+
+Ghost.prototype.isBlink = function () {
+  return this._blink;
+};
+
+Ghost.prototype._advanceVulnerableStateTimers = function () {
+  this._vulnerableTimeLeft--;
+  
+  if (this._flashingDuration == this._vulnerableTimeLeft) {
+    this._blink = true;
+    this._blinkTimer = 0;
+  }
+  if (this._vulnerableTimeLeft < this._flashingDuration) {
+    this._blinkTimer++;
+    if (this._blinkTimer == this._blinkDuration) {
+      this._blinkTimer = 0;
+      this._blink = !this._blink;
+    }
+  }
 };
 
 Ghost.prototype.makeVulnerable = function () {
   if (this._state == GHOST_STATE_NORMAL) {
     this._state = GHOST_STATE_VULNERABLE;
     this.setCurrentSpeed(GHOST_SPEED_SLOW);
+    this._vulnerableTimeLeft = this._vulnerabilityDuration;
   }
 };
 
@@ -172,7 +224,11 @@ Ghost.prototype.getCurrentBodyFrame = function () {
   if (this._state == GHOST_STATE_VULNERABLE) {
     prefix = 'vulnerable';
   }
-  return prefix + '_' + index;
+  var result = prefix + '_' + index;
+  if (this._blink) {
+    result += 'b';
+  }
+  return result;
 };
 
 Ghost.prototype.getCurrentEyesFrame = function () {
