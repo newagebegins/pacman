@@ -14,10 +14,6 @@ function PlayScene(game) {
   this._currentLevel = 1;
   this.loadMap(this._getMapForCurrentLevel());
   
-  for (var ghost in this._ghosts) {
-    this._ghosts[ghost].setRandomDirectionNotBlockedByWall();
-  }
-  
   this._score = 0;
   this._x = 50;
   this._y = 50;
@@ -166,6 +162,10 @@ PlayScene.prototype.loadMap = function (map) {
         this._ghosts.push(ghost);
       }
     }
+  }
+  
+  for (var i in this._ghosts) {
+    this._ghosts[i].setRandomDirectionNotBlockedByWall();
   }
 };
 
@@ -361,6 +361,31 @@ PlayScene.prototype.getBottom = function () {
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
     return  ['###########################',
+             '#            #            #',
+             '# #### ##### # ##### #### #',
+             '# #  # #   # # #   # #  # #',
+             '# #### ##### # ##### #### #',
+             '#                         #',
+             '# ###### # ##### # ###### #',
+             '#        #   #   #        #',
+             '######## ### # ### ########',
+             '       # #   1   # #       ',
+             '######## # ##-## # ########',
+             '           #234#           ',
+             '######## # ##### # ########',
+             '       # #   C   # #       ',
+             '######## # #####.# ########',
+             '#            #            #',
+             '# ### ###### # ###### ### #',
+             '#   #                 #   #',
+             '### # # ########### # # ###',
+             '#     #      #      #     #',
+             '# ########## # ########## #',
+             '#                         #',
+             '###########################'];
+  }
+  else if (this._currentLevel == 2) {
+    return  ['###########################',
              '#............#............#',
              '#.####.#####.#.#####.####.#',
              '#O#  #.#   #.#.#   #.#  #O#',
@@ -384,7 +409,7 @@ PlayScene.prototype._getMapForCurrentLevel = function () {
              '#.........................#',
              '###########################'];
   }
-  else if (this._currentLevel == 2) {
+  else if (this._currentLevel == 3) {
     return  ['###########################',
              '#............#............#',
              '#.####.#####.#.#####.####.#',

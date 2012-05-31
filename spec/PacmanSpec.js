@@ -1306,6 +1306,7 @@ describe("When all pellets on the level are eaten", function () {
     game.tick();
     game.tick();
     expect(scene.getCurrentLevel()).toEqual(2);
+    expect(scene.getGhosts()[0].getDirection()).toBeDefined();
   });
   
   it("Ready message should be shown", function () {
