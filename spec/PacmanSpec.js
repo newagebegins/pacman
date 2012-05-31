@@ -244,11 +244,17 @@ describe("When Play scene is just started", function () {
 });
 
 describe("When on Play scene and Ready message is visible", function () {
+  var map = ['###########',
+             '#C 12     #',
+             '# ##### #-#',
+             '#  .    # #',
+             '###########']
   var game, playScene;
   
   beforeEach(function () {
     game = new Game();
     playScene = new PlayScene(game);
+    playScene.loadMap(map);
     game.setScene(playScene);
   });
   
