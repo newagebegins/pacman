@@ -296,8 +296,9 @@ PlayScene.prototype.addScoreForEatenGhost = function (ghost) {
   this.increaseScore(amount);
   this._previousEatenGhostScoreValue = amount;
   
+  this._pointsMessage.setEatenGhost(ghost);
   this._pointsMessage.setValue(amount);
-  this._pointsMessage.setPosition(ghost.getPosition());
+  this._pointsMessage.setPosition(this._pacman.getPosition());
   this._pointsMessage.show();
 };
 

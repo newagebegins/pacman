@@ -18,6 +18,7 @@ function Ghost(name, scene) {
   this._sprite.setRect(new Rect({x: 0, y: 0, w: TILE_SIZE, h: TILE_SIZE}));
   this.setCurrentSpeed(GHOST_SPEED_NORMAL);
   this._state = GHOST_STATE_NORMAL;
+  this._visible = true;
   
   this._bodyFrames = [1,2];
   this._bodyFrame = 0;
@@ -32,6 +33,14 @@ function Ghost(name, scene) {
 
 Ghost.prototype.getName = function () {
   return this._name;
+};
+
+Ghost.prototype.setVisible = function (value) {
+  this._visible = value;
+};
+
+Ghost.prototype.isVisible = function () {
+  return this._visible;
 };
 
 Ghost.prototype.tick = function () {
@@ -214,6 +223,10 @@ Ghost.prototype.runHome = function () {
 };
 
 Ghost.prototype.draw = function (ctx) {
+  if (!this._visible) {
+    return;
+  }
+  
   var x = this._scene.getX() + this.getX();
   var y = this._scene.getY() + this.getY();
   

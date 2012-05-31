@@ -811,13 +811,15 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getCurrentSpeed()).toEqual(GHOST_SPEED_FAST);
     });
     
-    it("earned points should appear (during that time pacman and ghosts should not move)", function () {
+    it("earned points message should appear, during that time pacman and ghosts should not move, pacman and touched ghost should be invisible", function () {
       var GHOST_SCORE_VALUE = 200;
       scene.setGhostScoreValue(GHOST_SCORE_VALUE);
       var pointsMessage = scene.getPointsMessage();
       pointsMessage.setVisibilityDuration(2);
       
       expect(pointsMessage.isVisible()).toBeFalsy();
+      expect(pacman.isVisible()).toBeTruthy();
+      expect(ghost.isVisible()).toBeTruthy();
       game.tick();
       
       var ghostPosition = ghost.getPosition();
@@ -825,19 +827,25 @@ describe("When Pacman touches a ghost", function () {
       
       expect(pointsMessage.isVisible()).toBeTruthy();
       expect(pointsMessage.getValue()).toEqual(GHOST_SCORE_VALUE);
-      expect(pointsMessage.getPosition()).toEqual(ghostPosition);
+      expect(pointsMessage.getPosition()).toEqual(pacmanPosition);
+      expect(pacman.isVisible()).toBeFalsy();
+      expect(ghost.isVisible()).toBeFalsy();
       
       game.tick();
       
       expect(pointsMessage.isVisible()).toBeTruthy();
       expect(ghost.getPosition()).toEqual(ghostPosition);
       expect(pacman.getPosition()).toEqual(pacmanPosition);
+      expect(pacman.isVisible()).toBeFalsy();
+      expect(ghost.isVisible()).toBeFalsy();
       
       game.tick();
       
       expect(pointsMessage.isVisible()).toBeFalsy();
       expect(ghost.getPosition()).not.toEqual(ghostPosition);
       expect(pacman.getPosition()).not.toEqual(pacmanPosition);
+      expect(pacman.isVisible()).toBeTruthy();
+      expect(ghost.isVisible()).toBeTruthy();
     });
   });
 });

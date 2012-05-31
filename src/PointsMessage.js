@@ -8,6 +8,10 @@ PointsMessage.prototype.tick = function () {
     return;
   }
   this._timeToHide--;
+  if (this._timeToHide == 0) {
+    this._ghost.setVisible(true);
+    this._scene.getPacman().setVisible(true);
+  }
 };
 
 PointsMessage.prototype.setVisibilityDuration = function (duration) {
@@ -34,8 +38,14 @@ PointsMessage.prototype.getPosition = function () {
   return this._position;
 };
 
+PointsMessage.prototype.setEatenGhost = function (ghost) {
+  this._ghost = ghost;
+};
+
 PointsMessage.prototype.show = function () {
   this._timeToHide = this._visibilityDuration;
+  this._ghost.setVisible(false);
+  this._scene.getPacman().setVisible(false);
 };
 
 PointsMessage.prototype.draw = function (ctx) {
@@ -45,7 +55,7 @@ PointsMessage.prototype.draw = function (ctx) {
   
   ctx.fillStyle = "#2abac0";
   ctx.font = "bold 12px 'Lucida Console', Monaco, monospace"
-  var x = this._scene.getX() + this._position.x;
-  var y = this._scene.getY() + this._position.y;
+  var x = this._scene.getX() + this._position.x - 8;
+  var y = this._scene.getY() + this._position.y + 8;
   ctx.fillText(this._value, x, y);
 };
