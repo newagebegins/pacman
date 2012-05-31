@@ -1126,3 +1126,41 @@ describe("When Ghost goes off the map", function () {
     });
   });
 });
+
+describe("When Pacman eats Ghosts", function () {
+  it("next eaten Ghost should increase the Score twice as much as the previous one", function () {
+    var game = new Game();
+    var scene = new PlayScene(game);
+    game.setScene(scene);
+    scene.getReadyMessage().hide();
+    var map = ['#########',
+               '#C1234  #',
+               '# ##-## #',
+               '# #   # #',
+               '# ##### #',
+               '#       #',
+               '#########'];
+    scene.loadMap(map);
+    scene.setGhostScoreValue(200);
+    
+    var pacman = scene.getPacman();
+    pacman.setSpeed(TILE_SIZE);
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+    
+    var ghosts = scene.getGhosts();
+    for (var i in ghosts) {
+      ghosts[i].makeVulnerable();
+      ghosts[i].setCurrentSpeed(0);
+    }
+    
+    expect(scene.getScore()).toEqual(0);
+    game.tick();
+    expect(scene.getScore()).toEqual(200);
+    game.tick();
+    expect(scene.getScore()).toEqual(200 + 400);
+    game.tick();
+    expect(scene.getScore()).toEqual(200 + 400 + 800);
+    game.tick();
+    expect(scene.getScore()).toEqual(200 + 400 + 800 + 1600);
+  });
+});

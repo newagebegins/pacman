@@ -21,6 +21,8 @@ function PlayScene(game) {
   this._score = 0;
   this._x = 50;
   this._y = 50;
+  
+  this.setGhostScoreValue(200);
 }
 
 PlayScene.prototype.getX = function () {
@@ -279,6 +281,17 @@ PlayScene.prototype.getGhosts = function () {
 
 PlayScene.prototype.getCurrentLevel = function () {
   return this._currentLevel;
+};
+
+PlayScene.prototype.setGhostScoreValue = function (value) {
+  this._ghostScoreValue = value;
+  this._previousEatenGhostScoreValue = 0;
+};
+
+PlayScene.prototype.addScoreForEatenGhost = function () {
+  var amount = this._previousEatenGhostScoreValue == 0 ? this._ghostScoreValue : this._previousEatenGhostScoreValue * 2;
+  this.increaseScore(amount);
+  this._previousEatenGhostScoreValue = amount;
 };
 
 PlayScene.prototype.getScore = function () {
