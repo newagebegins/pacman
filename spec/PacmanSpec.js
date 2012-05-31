@@ -1307,6 +1307,7 @@ describe("When all pellets on the level are eaten", function () {
     game.tick();
     expect(scene.getCurrentLevel()).toEqual(2);
     expect(scene.getGhosts()[0].getDirection()).toBeDefined();
+    expect(pacman.getCurrentFrame()).toEqual('pacman_1');
   });
   
   it("Ready message should be shown", function () {
@@ -1314,5 +1315,28 @@ describe("When all pellets on the level are eaten", function () {
     game.tick();
     game.tick();
     expect(scene.getReadyMessage().isVisible()).toBeTruthy();
+  });
+});
+
+describe("When all pellets on the level are eaten", function () {
+  describe("and this is the last level", function () {
+    it("Startup scene should be shown", function () {
+      var map = ['####',
+                 'C.  ',
+                 '####'];
+      var maps = [map];
+      var game = new Game();
+      var scene = new PlayScene(game, maps);
+      game.setScene(scene);
+      scene.getReadyMessage().hide();
+
+      var pacman = scene.getPacman();
+      pacman.setSpeed(TILE_SIZE);
+      pacman.requestNewDirection(DIRECTION_RIGHT);
+      
+      game.tick();
+      
+      expect(game.getScene() instanceof StartupScene).toBeTruthy();
+    });
   });
 });
