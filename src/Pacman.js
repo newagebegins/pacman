@@ -87,6 +87,9 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
         this._scene.makeGhostsVulnerable();
       }
       this._scene.removePellet(pellets[pellet]);
+      if (this._scene.getPellets().length == 0) {
+        this._scene.nextLevel();
+      }
       return;
     }
   }

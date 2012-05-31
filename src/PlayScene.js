@@ -286,6 +286,12 @@ PlayScene.prototype.getCurrentLevel = function () {
   return this._currentLevel;
 };
 
+PlayScene.prototype.nextLevel = function () {
+  this._currentLevel++;
+  this.loadMap(this._getMapForCurrentLevel());
+  this._readyMessage.show();
+};
+
 PlayScene.prototype.setGhostScoreValue = function (value) {
   this._ghostScoreValue = value;
   this._previousEatenGhostScoreValue = 0;
@@ -354,6 +360,31 @@ PlayScene.prototype.getBottom = function () {
 
 PlayScene.prototype._getMapForCurrentLevel = function () {
   if (this._currentLevel == 1) {
+    return  ['###########################',
+             '#............#............#',
+             '#.####.#####.#.#####.####.#',
+             '#O#  #.#   #.#.#   #.#  #O#',
+             '#.####.#####.#.#####.####.#',
+             '#.........................#',
+             '#.######.#.#####.#.######.#',
+             '#........#...#...#........#',
+             '########.### # ###.########',
+             '       #.#   1   #.#       ',
+             '########.# ##-## #.########',
+             '        .  #234#  .        ',
+             '########.# ##### #.########',
+             '       #.#   C   #.#       ',
+             '########.# ##### #.########',
+             '#............#............#',
+             '#.###.######.#.######.###.#',
+             '#O..#.................#..O#',
+             '###.#.#.###########.#.#.###',
+             '#.....#......#......#.....#',
+             '#.##########.#.##########.#',
+             '#.........................#',
+             '###########################'];
+  }
+  else if (this._currentLevel == 2) {
     return  ['###########################',
              '#............#............#',
              '#.####.#####.#.#####.####.#',

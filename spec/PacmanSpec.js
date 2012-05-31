@@ -570,7 +570,7 @@ describe("When Pacman collides with a power pellet", function () {
   var map = ['###########',
              '#CO12     #',
              '# ##### #-#',
-             '#       # #',
+             '#  .    # #',
              '###########']
   var game, playScene, pacman, ghostNormal, ghostRunHome;
   
@@ -608,7 +608,7 @@ describe("When Pacman collides with a power pellet", function () {
     var map = ['###########',
                '#CO O     #',
                '# ##### #-#',
-               '#   1   # #',
+               '#   1 . # #',
                '###########'];
     var game = new Game();
     var playScene = new PlayScene(game);
@@ -1253,7 +1253,7 @@ describe("When Pacman eats a Power Pellet", function () {
                '# ##-## #',
                '# #   # #',
                '# ##### #',
-               '#       #',
+               '# .     #',
                '#########'];
     scene.loadMap(map);
     scene.setGhostScoreValue(200);
@@ -1280,5 +1280,38 @@ describe("When Pacman eats a Power Pellet", function () {
     expect(scene.getScore()).toEqual(200 + 400 + 50 + 200);
     game.tick();
     expect(scene.getScore()).toEqual(200 + 400 + 50 + 200 + 400);
+  });
+});
+
+describe("When all pellets on the level are eaten", function () {
+  var map = ['####',
+             'C.O ',
+             '####'];
+  var game, scene, pacman;
+  
+  beforeEach(function () {
+    game = new Game();
+    scene = new PlayScene(game);
+    game.setScene(scene);
+    scene.getReadyMessage().hide();
+    scene.loadMap(map);
+    
+    pacman = scene.getPacman();
+    pacman.setSpeed(TILE_SIZE);
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+  });
+  
+  it("next level should be loaded", function () {
+    expect(scene.getCurrentLevel()).toEqual(1);
+    game.tick();
+    game.tick();
+    expect(scene.getCurrentLevel()).toEqual(2);
+  });
+  
+  it("Ready message should be shown", function () {
+    expect(scene.getReadyMessage().isVisible()).toBeFalsy();
+    game.tick();
+    game.tick();
+    expect(scene.getReadyMessage().isVisible()).toBeTruthy();
   });
 });

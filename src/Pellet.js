@@ -1,8 +1,9 @@
-var NORMAL_PELLET_SIZE = TILE_SIZE / 5;
+var PELLET_SIZE = 2;
+var PELLET_POSITION_CORRECTION = 7;
 
 function Pellet(scene) {
   this._scene = scene;
-  this._rect = new Rect({x: 0, y: 0, w: NORMAL_PELLET_SIZE, h: NORMAL_PELLET_SIZE});
+  this._rect = new Rect({x: 0, y: 0, w: PELLET_SIZE, h: PELLET_SIZE});
 }
 
 Pellet.prototype.getRect = function () {
@@ -14,8 +15,8 @@ Pellet.prototype.getValue = function () {
 };
 
 Pellet.prototype.draw = function (ctx) {
-  var x = this._scene.getX() + this.getX();
-  var y = this._scene.getY() + this.getY();
+  var x = this._scene.getX() + this.getX() - PELLET_POSITION_CORRECTION;
+  var y = this._scene.getY() + this.getY() - PELLET_POSITION_CORRECTION;
   
   ctx.drawImage(ImageManager.getImage('pellet'), x, y);
 };
@@ -24,6 +25,8 @@ Pellet.prototype.draw = function (ctx) {
 /*--------------------------- Rect delegation --------------------------------*/
 
 Pellet.prototype.setPosition = function (position) {
+  position.x += PELLET_POSITION_CORRECTION;
+  position.y += PELLET_POSITION_CORRECTION;
   this._rect.setPosition(position);
 };
 
