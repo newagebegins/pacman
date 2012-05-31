@@ -794,6 +794,11 @@ describe("When Pacman touches a ghost", function () {
       expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
     });
     
+    it("Pacman's mouth should be closed", function () {
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_1');
+    });
+    
     it("Ghosts should be on their start positions", function () {
       expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
       game.tick();
