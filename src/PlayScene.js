@@ -321,6 +321,7 @@ PlayScene.prototype.placeGhostsToStartPositions = function () {
 };
 
 PlayScene.prototype.makeGhostsVulnerable = function () {
+  this._previousEatenGhostScoreValue = 0;
   for (var ghost in this._ghosts) {
     this._ghosts[ghost].makeVulnerable();
   }
