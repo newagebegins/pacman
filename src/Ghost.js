@@ -35,7 +35,8 @@ Ghost.prototype.getName = function () {
 };
 
 Ghost.prototype.tick = function () {
-  if (this._scene.getReadyMessage().isVisible()) {
+  if (this._scene.getReadyMessage().isVisible() ||
+      this._scene.getPointsMessage().isVisible()) {
     return;
   }
   

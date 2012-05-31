@@ -1,6 +1,6 @@
 function PointsMessage(scene) {
   this._scene = scene;
-  this._visibilityDuration = 30;
+  this._visibilityDuration = 15;
 }
 
 PointsMessage.prototype.tick = function () {

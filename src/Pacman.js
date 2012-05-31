@@ -27,13 +27,16 @@ Pacman.prototype.requestNewDirection = function (direction) {
 };
 
 Pacman.prototype.tick = function () {
-  if (!this._scene.getReadyMessage().isVisible()) {
-    this._advanceFrame();
-    this._sprite.move(this._sprite.getDirection());
-    this._handleCollisionsWithWalls();
-    this._handleCollisionsWithPellets();
-    this._handleCollisionsWithGhosts();
+  if (this._scene.getReadyMessage().isVisible() ||
+      this._scene.getPointsMessage().isVisible()) {
+    return;
   }
+  
+  this._advanceFrame();
+  this._sprite.move(this._sprite.getDirection());
+  this._handleCollisionsWithWalls();
+  this._handleCollisionsWithPellets();
+  this._handleCollisionsWithGhosts();
 };
 
 Pacman.prototype._advanceFrame = function () {

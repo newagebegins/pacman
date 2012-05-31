@@ -811,22 +811,33 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getCurrentSpeed()).toEqual(GHOST_SPEED_FAST);
     });
     
-    it("earned points should appear", function () {
+    it("earned points should appear (during that time pacman and ghosts should not move)", function () {
       var GHOST_SCORE_VALUE = 200;
       scene.setGhostScoreValue(GHOST_SCORE_VALUE);
       var pointsMessage = scene.getPointsMessage();
       pointsMessage.setVisibilityDuration(2);
-      var ghostPosition = ghost.getPosition();
       
       expect(pointsMessage.isVisible()).toBeFalsy();
       game.tick();
+      
+      var ghostPosition = ghost.getPosition();
+      var pacmanPosition = pacman.getPosition();
+      
       expect(pointsMessage.isVisible()).toBeTruthy();
       expect(pointsMessage.getValue()).toEqual(GHOST_SCORE_VALUE);
       expect(pointsMessage.getPosition()).toEqual(ghostPosition);
+      
       game.tick();
+      
       expect(pointsMessage.isVisible()).toBeTruthy();
+      expect(ghost.getPosition()).toEqual(ghostPosition);
+      expect(pacman.getPosition()).toEqual(pacmanPosition);
+      
       game.tick();
+      
       expect(pointsMessage.isVisible()).toBeFalsy();
+      expect(ghost.getPosition()).not.toEqual(ghostPosition);
+      expect(pacman.getPosition()).not.toEqual(pacmanPosition);
     });
   });
 });
@@ -905,6 +916,7 @@ describe("When vulnerable ghost collides with Pacman", function () {
                  '#############################'];
       scene.loadMap(map);
       scene.getReadyMessage().hide();
+      scene.getPointsMessage().setVisibilityDuration(0);
 
       var pacman = scene.getPacman();
       pacman.requestNewDirection(DIRECTION_RIGHT);
@@ -1160,6 +1172,7 @@ describe("When Pacman eats Ghosts", function () {
                '#########'];
     scene.loadMap(map);
     scene.setGhostScoreValue(200);
+    scene.getPointsMessage().setVisibilityDuration(0);
     
     var pacman = scene.getPacman();
     pacman.setSpeed(TILE_SIZE);
