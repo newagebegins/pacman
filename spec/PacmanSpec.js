@@ -603,6 +603,39 @@ describe("When Pacman collides with a power pellet", function () {
   });
 });
 
+describe("When Pacman collides with a power pellet", function () {
+  it("vulnerability time and blink flag of already vulnerable ghosts should be reset", function () {
+    var map = ['###########',
+               '#CO O     #',
+               '# ##### #-#',
+               '#   1   # #',
+               '###########'];
+    var game = new Game();
+    var playScene = new PlayScene(game);
+    game.setScene(playScene);
+    playScene.loadMap(map);
+    playScene.getReadyMessage().hide();
+    
+    var pacman = playScene.getPacman();
+    pacman.setSpeed(TILE_SIZE);
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+    
+    var VULNERABILITY_DURATION = 10;
+    var ghost = playScene.getGhosts()[0];
+    ghost.setVulnerabilityDuration(VULNERABILITY_DURATION);
+    ghost.setFlashingDuration(8);
+    ghost.setBlinkDuration(1);
+    
+    expect(ghost.getVulnerableTimeLeft()).toEqual(0);
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(VULNERABILITY_DURATION - 1);
+    game.tick();
+    game.tick();
+    expect(ghost.getVulnerableTimeLeft()).toEqual(VULNERABILITY_DURATION - 1);
+    expect(ghost.getCurrentBodyFrame()).toEqual('vulnerable_2');
+  });
+});
+
 describe("Ghost", function () {
   describe("#getRandomDirectionNotBlockedByWall", function () {
     var game, playScene;

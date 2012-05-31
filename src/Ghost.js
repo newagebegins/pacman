@@ -212,6 +212,10 @@ Ghost.prototype.makeVulnerable = function () {
     this.setCurrentSpeed(GHOST_SPEED_SLOW);
     this._vulnerableTimeLeft = this._vulnerabilityDuration;
   }
+  else if (this._state == GHOST_STATE_VULNERABLE) {
+    this._vulnerableTimeLeft = this._vulnerabilityDuration;
+    this._blink = false;
+  }
 };
 
 Ghost.prototype.runHome = function () {
