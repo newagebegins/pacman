@@ -39,25 +39,27 @@ Pacman.prototype.requestNewDirection = function (direction) {
   this._sprite.setCurrentSpeed(this._sprite.getSpeed());
 };
 
-Pacman.prototype.tick = function () {
-  if (this._scene.getReadyMessage().isVisible() ||
-      this._scene.getPointsMessage().isVisible()) {
-    return;
-  }
-  
-  this._advanceFrame();
-  this._sprite.move(this._sprite.getDirection());
-  this._sprite.checkIfOutOfMapBounds();
-  this._handleCollisionsWithWalls();
-  this._handleCollisionsWithPellets();
-  this._handleCollisionsWithGhosts();
+Pacman.prototype.setStrategy = function (strategy) {
+  this._strategy = strategy;
 };
 
-Pacman.prototype._advanceFrame = function () {
+Pacman.prototype.tick = function () {
+  this._strategy.tick();
+};
+
+Pacman.prototype.advanceFrame = function () {
   this._frame++;
   if (this._frame >= this._frames.length) {
     this._frame = 0;
   }
+};
+
+Pacman.prototype.move = function () {
+  this._sprite.move(this._sprite.getDirection());
+};
+
+Pacman.prototype.checkIfOutOfMapBounds = function () {
+  this._sprite.checkIfOutOfMapBounds();
 };
 
 Pacman.prototype.keyPressed = function (key) {
@@ -75,7 +77,7 @@ Pacman.prototype.keyPressed = function (key) {
   }
 };
 
-Pacman.prototype._handleCollisionsWithWalls = function () {
+Pacman.prototype.handleCollisionsWithWalls = function () {
   var touchedWall = this._sprite.getTouchedWall();
   if (touchedWall != null) {
     this._sprite.resolveCollisionWithWall(touchedWall);
@@ -83,7 +85,7 @@ Pacman.prototype._handleCollisionsWithWalls = function () {
   }
 };
 
-Pacman.prototype._handleCollisionsWithPellets = function () {
+Pacman.prototype.handleCollisionsWithPellets = function () {
   var pellets = this._scene.getPellets();
   for (var pellet in pellets) {
     if (this._sprite.collidedWith(pellets[pellet])) {
@@ -100,7 +102,7 @@ Pacman.prototype._handleCollisionsWithPellets = function () {
   }
 };
 
-Pacman.prototype._handleCollisionsWithGhosts = function () {
+Pacman.prototype.handleCollisionsWithGhosts = function () {
   var ghosts = this._scene.getGhosts();
   for (var i in ghosts) {
     var ghost = ghosts[i];
@@ -132,7 +134,6 @@ Pacman.prototype.draw = function (ctx) {
   
   var x = this._scene.getX() + this.getX();
   var y = this._scene.getY() + this.getY();
-  
   ctx.drawImage(ImageManager.getImage(this.getCurrentFrame()), x, y);
 };
 
@@ -149,8 +150,16 @@ Pacman.prototype.getRect = function () {
   return this._sprite.getRect();
 };
 
+Pacman.prototype.setDirection = function (direction) {
+  this._sprite.setDirection(direction);
+};
+
 Pacman.prototype.getDirection = function () {
   return this._sprite.getDirection();
+};
+
+Pacman.prototype.setCurrentSpeed = function (speed) {
+  this._sprite.setCurrentSpeed(speed);
 };
 
 Pacman.prototype.setSpeed = function (speed) {
