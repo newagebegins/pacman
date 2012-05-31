@@ -70,10 +70,12 @@ Ghost.prototype.tick = function () {
       this._setDirectionToCurrentWaypoint();
     }
     this._sprite.move(this.getDirection());
+    this._sprite.checkIfOutOfMapBounds();
   }
   else {
     this._tryTurnCorner();
     this._sprite.move(this.getDirection());
+    this._sprite.checkIfOutOfMapBounds();
     this._handleCollisionsWithWalls();
   }
 };
