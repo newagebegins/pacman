@@ -23,6 +23,7 @@ function PlayScene(game) {
   this._y = 50;
   
   this.setGhostScoreValue(200);
+  this._pointsMessage = new PointsMessage(this);
 }
 
 PlayScene.prototype.getX = function () {
@@ -35,6 +36,7 @@ PlayScene.prototype.getY = function () {
 
 PlayScene.prototype.tick = function () {
   this._readyMessage.tick();
+  this._pointsMessage.tick();
   this._pacman.tick();
   
   for (var ghost in this._ghosts) {
@@ -66,6 +68,7 @@ PlayScene.prototype.draw = function (ctx) {
   this._gate.draw(ctx);
   this._drawScore(ctx);
   this._drawLives(ctx);
+  this._pointsMessage.draw(ctx);
   this._readyMessage.draw(ctx);
 };
 
@@ -288,10 +291,14 @@ PlayScene.prototype.setGhostScoreValue = function (value) {
   this._previousEatenGhostScoreValue = 0;
 };
 
-PlayScene.prototype.addScoreForEatenGhost = function () {
+PlayScene.prototype.addScoreForEatenGhost = function (ghost) {
   var amount = this._previousEatenGhostScoreValue == 0 ? this._ghostScoreValue : this._previousEatenGhostScoreValue * 2;
   this.increaseScore(amount);
   this._previousEatenGhostScoreValue = amount;
+  
+  this._pointsMessage.setValue(amount);
+  this._pointsMessage.setPosition(ghost.getPosition());
+  this._pointsMessage.show();
 };
 
 PlayScene.prototype.getScore = function () {
@@ -300,6 +307,10 @@ PlayScene.prototype.getScore = function () {
 
 PlayScene.prototype.increaseScore = function (amount) {
   this._score += amount;
+};
+
+PlayScene.prototype.getPointsMessage = function () {
+  return this._pointsMessage;
 };
 
 PlayScene.prototype.placeGhostsToStartPositions = function () {
