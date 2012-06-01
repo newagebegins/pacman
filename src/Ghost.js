@@ -107,13 +107,38 @@ Ghost.prototype._setDirectionToCurrentWaypoint = function () {
 };
 
 Ghost.prototype._tryTurnCorner = function () {
-  if (getRandomInt(0, 1)) {
+  // When ghost can continue moving in the current direction it has 50/50 chance
+  // on turning the corner.
+  if (!this._sprite.willCollideWithWallIfMovedInDirection(this.getDirection()) && getRandomInt(0, 1)) {
     return;
   }
+  
   var possibleTurns = this._getPossibleTurns();
   if (possibleTurns.length == 0) {
     return;
   }
+  
+  // Ghosts will try to get closer to Pacman.
+  for (var i = 0; i < possibleTurns.length; ++i) {
+    if (possibleTurns[i] == DIRECTION_LEFT && this._scene.getPacman().getX() < this.getX()) {
+      this._sprite.setDirection(DIRECTION_LEFT);
+      return;
+    }
+    if (possibleTurns[i] == DIRECTION_RIGHT && this._scene.getPacman().getX() > this.getX()) {
+      this._sprite.setDirection(DIRECTION_RIGHT);
+      return;
+    }
+    if (possibleTurns[i] == DIRECTION_UP && this._scene.getPacman().getY() < this.getY()) {
+      this._sprite.setDirection(DIRECTION_UP);
+      return;
+    }
+    if (possibleTurns[i] == DIRECTION_DOWN && this._scene.getPacman().getY() > this.getY()) {
+      this._sprite.setDirection(DIRECTION_DOWN);
+      return;
+    }
+  }
+  
+  // If nothing of above is worked, just choose a random direction.
   this._sprite.setDirection(getRandomElementFromArray(possibleTurns));
 };
 
