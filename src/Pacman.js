@@ -1,4 +1,5 @@
 var EVENT_PELLET_EATEN = 'EVENT_PELLET_EATEN';
+var EVENT_POWER_PELLET_EATEN = 'EVENT_POWER_PELLET_EATEN';
 
 function Pacman(scene, game) {
   this._scene = scene;
@@ -93,11 +94,16 @@ Pacman.prototype.handleCollisionsWithPellets = function () {
   for (var pellet in pellets) {
     if (this._sprite.collidedWith(pellets[pellet])) {
       this._scene.increaseScore(pellets[pellet].getValue());
+      
       if (pellets[pellet] instanceof PowerPellet) {
         this._scene.makeGhostsVulnerable();
+        this._game.getEventManager().fireEvent({'name': EVENT_POWER_PELLET_EATEN});
       }
-      this._switchEatenPelletSound();
-      this._game.getEventManager().fireEvent({'name': EVENT_PELLET_EATEN, 'pacman': this});
+      else { // Normal pellet.
+        this._switchEatenPelletSound();
+        this._game.getEventManager().fireEvent({'name': EVENT_PELLET_EATEN, 'pacman': this});
+      }
+      
       this._scene.removePellet(pellets[pellet]);
       if (this._scene.getPellets().length == 0) {
         this._scene.nextLevel();

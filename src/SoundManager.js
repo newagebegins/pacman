@@ -2,6 +2,7 @@ var SoundManager = (function() {
   var sounds = {
     pellet1: null,
     pellet2: null,
+    powerpellet: null,
   };
   
   for (var i in sounds) {
@@ -10,12 +11,12 @@ var SoundManager = (function() {
   }
   
   return {
-    play: function (name) {
-      sounds[name].play();
-    },
     notify: function (event) {
       if (event.name == EVENT_PELLET_EATEN) {
-        this.play(event.pacman.getEatenPelletSound());
+        sounds[event.pacman.getEatenPelletSound()].play();
+      }
+      else if (event.name == EVENT_POWER_PELLET_EATEN) {
+        sounds.powerpellet.play();
       }
     }
   };

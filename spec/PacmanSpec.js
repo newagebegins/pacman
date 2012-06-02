@@ -571,7 +571,7 @@ describe("When Pacman collides with a pellet", function () {
     expect(playScene.getPellets().length).toEqual(2);
   });
   
-  it("EVENT_PELLET_EATEN should be generated", function () {
+  it("EVENT_PELLET_EATEN event should be fired", function () {
     var eventManager = game.getEventManager();
     spyOn(eventManager, 'fireEvent');
     game.tick();
@@ -623,6 +623,13 @@ describe("When Pacman collides with a power pellet", function () {
     expect(ghostNormal.getCurrentSpeed()).toEqual(GHOST_SPEED_NORMAL);
     game.tick();
     expect(ghostNormal.getCurrentSpeed()).toEqual(GHOST_SPEED_SLOW);
+  });
+  
+  it("EVENT_POWER_PELLET_EATEN event should be fired", function () {
+    var eventManager = game.getEventManager();
+    spyOn(eventManager, 'fireEvent');
+    game.tick();
+    expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_POWER_PELLET_EATEN});
   });
 });
 
