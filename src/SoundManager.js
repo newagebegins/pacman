@@ -3,6 +3,7 @@ var SoundManager = (function() {
     pellet1: null,
     pellet2: null,
     powerpellet: null,
+    eatghost: null,
   };
   
   for (var i in sounds) {
@@ -17,6 +18,9 @@ var SoundManager = (function() {
       }
       else if (event.name == EVENT_POWER_PELLET_EATEN) {
         sounds.powerpellet.play();
+      }
+      else if (event.name == EVENT_GHOST_EATEN) {
+        sounds.eatghost.play();
       }
     }
   };

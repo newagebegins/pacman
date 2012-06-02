@@ -8,7 +8,8 @@ function GameRunner() {
   this._game = new Game();
   this._keyboard = new Keyboard(this._game);
   
-  this._game.getEventManager().addSubscriber(SoundManager, [EVENT_PELLET_EATEN, EVENT_POWER_PELLET_EATEN]);
+  this._game.getEventManager().addSubscriber(SoundManager,
+    [EVENT_PELLET_EATEN, EVENT_POWER_PELLET_EATEN, EVENT_GHOST_EATEN]);
 }
 
 GameRunner.prototype.run = function () {

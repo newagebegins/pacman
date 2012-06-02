@@ -915,6 +915,13 @@ describe("When Pacman touches a ghost", function () {
       expect(pacman.isVisible()).toBeTruthy();
       expect(ghost.isVisible()).toBeTruthy();
     });
+    
+    it("EVENT_GHOST_EATEN event should be fired", function () {
+      var eventManager = game.getEventManager();
+      spyOn(eventManager, 'fireEvent');
+      game.tick();
+      expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_GHOST_EATEN});
+    });
   });
 });
 

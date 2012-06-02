@@ -1,5 +1,6 @@
 var EVENT_PELLET_EATEN = 'EVENT_PELLET_EATEN';
 var EVENT_POWER_PELLET_EATEN = 'EVENT_POWER_PELLET_EATEN';
+var EVENT_GHOST_EATEN = 'EVENT_GHOST_EATEN';
 
 function Pacman(scene, game) {
   this._scene = scene;
@@ -139,6 +140,7 @@ Pacman.prototype.handleCollisionsWithGhosts = function () {
         return;
       }
       else if (ghost.getState() == GHOST_STATE_VULNERABLE) {
+        this._game.getEventManager().fireEvent({'name': EVENT_GHOST_EATEN});
         ghost.runHome();
         this._scene.addScoreForEatenGhost(ghost);
       }
