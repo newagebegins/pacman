@@ -544,7 +544,7 @@ describe("When Pacman is moving and is given a command to change direction", fun
 });
 
 describe("When Pacman collides with a pellet", function () {
-  var map = ['C..'];
+  var map = ['C...'];
   var game, playScene, pacman, PELLET_VALUE;
   
   beforeEach(function () {
@@ -566,9 +566,26 @@ describe("When Pacman collides with a pellet", function () {
   });
   
   it("pellet should disappear", function () {
-    expect(playScene.getPellets().length).toEqual(2);
+    expect(playScene.getPellets().length).toEqual(3);
     game.tick();
-    expect(playScene.getPellets().length).toEqual(1);
+    expect(playScene.getPellets().length).toEqual(2);
+  });
+  
+  it("EVENT_PELLET_EATEN should be generated", function () {
+    var eventManager = game.getEventManager();
+    spyOn(eventManager, 'fireEvent');
+    game.tick();
+    expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_PELLET_EATEN, 'pacman': pacman});
+  });
+  
+  it("two played sounds should be switched after each eaten pellet", function () {
+    expect(pacman.getEatenPelletSound()).toEqual('pellet1');
+    game.tick();
+    expect(pacman.getEatenPelletSound()).toEqual('pellet2');
+    game.tick();
+    expect(pacman.getEatenPelletSound()).toEqual('pellet1');
+    game.tick();
+    expect(pacman.getEatenPelletSound()).toEqual('pellet2');
   });
 });
 
@@ -1344,5 +1361,28 @@ describe("When all pellets on the level are eaten", function () {
       
       expect(game.getScene() instanceof StartupScene).toBeTruthy();
     });
+  });
+});
+
+describe("Event Manager", function () {
+  it("should notify subscribers about events", function () {
+    var EVENT_1 = {name: 'event_1'};
+    var EVENT_2 = {name: 'event_2'};
+    
+    var eventManager = new EventManager();
+    
+    var subscriber1 = jasmine.createSpyObj('subscriber', ['notify']);
+    var subscriber2 = jasmine.createSpyObj('subscriber', ['notify']);
+    
+    eventManager.addSubscriber(subscriber1, ['event_1']);
+    eventManager.addSubscriber(subscriber2, ['event_1', 'event_2']);
+    
+    eventManager.fireEvent(EVENT_1);
+    eventManager.fireEvent(EVENT_2);
+    
+    expect(subscriber1.notify).toHaveBeenCalledWith(EVENT_1);
+    expect(subscriber2.notify).toHaveBeenCalledWith(EVENT_1);
+    expect(subscriber1.notify).not.toHaveBeenCalledWith(EVENT_2);
+    expect(subscriber2.notify).toHaveBeenCalledWith(EVENT_2);
   });
 });

@@ -1,6 +1,11 @@
 function Game() {
   this._scene = new StartupScene(this);
+  this._eventManager = new EventManager();
 }
+
+Game.prototype.getEventManager = function () {
+  return this._eventManager;
+};
 
 Game.prototype.setScene = function (scene) {
   this._scene = scene;

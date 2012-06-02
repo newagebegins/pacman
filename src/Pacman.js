@@ -1,3 +1,5 @@
+var EVENT_PELLET_EATEN = 'EVENT_PELLET_EATEN';
+
 function Pacman(scene, game) {
   this._scene = scene;
   this._game = game;
@@ -9,6 +11,7 @@ function Pacman(scene, game) {
   this._frame = 0;
   
   this._livesCount = 2;
+  this._eatenPelletSound = 'pellet1';
 }
 
 Pacman.prototype.setLivesCount = function (lives) {
@@ -93,6 +96,8 @@ Pacman.prototype.handleCollisionsWithPellets = function () {
       if (pellets[pellet] instanceof PowerPellet) {
         this._scene.makeGhostsVulnerable();
       }
+      this._switchEatenPelletSound();
+      this._game.getEventManager().fireEvent({'name': EVENT_PELLET_EATEN, 'pacman': this});
       this._scene.removePellet(pellets[pellet]);
       if (this._scene.getPellets().length == 0) {
         this._scene.nextLevel();
@@ -100,6 +105,14 @@ Pacman.prototype.handleCollisionsWithPellets = function () {
       return;
     }
   }
+};
+
+Pacman.prototype._switchEatenPelletSound = function () {
+  this._eatenPelletSound = this._eatenPelletSound == 'pellet1' ? 'pellet2' : 'pellet1';
+};
+
+Pacman.prototype.getEatenPelletSound = function () {
+  return this._eatenPelletSound;
 };
 
 Pacman.prototype.handleCollisionsWithGhosts = function () {

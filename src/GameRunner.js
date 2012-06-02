@@ -7,6 +7,8 @@ function GameRunner() {
   this._fpsCounter = new FPSCounter();
   this._game = new Game();
   this._keyboard = new Keyboard(this._game);
+  
+  this._game.getEventManager().addSubscriber(SoundManager, [EVENT_PELLET_EATEN]);
 }
 
 GameRunner.prototype.run = function () {
