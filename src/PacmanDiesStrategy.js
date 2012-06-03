@@ -5,8 +5,7 @@ function PacmanDiesStrategy(pacman) {
 PacmanDiesStrategy.prototype.tick = function () {
   this._pacman.advanceDeathFrame();
   
-  if (this._pacman.getDeathFrame() > PACMAN_DIES_FRAMES_COUNT ||
-      this._pacman.shouldSkipDiesAnimation()) {
+  if (this._pacman.isDiesAnimationCompleted() || this._pacman.shouldSkipDiesAnimation()) {
     this._pacman.diesAnimationCompleted();
   }
 };
