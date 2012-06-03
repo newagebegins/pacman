@@ -835,17 +835,27 @@ describe("When Pacman touches a ghost", function () {
     });
     
     it("Pacman Dies animation should be played", function () {
+      var eventManager = game.getEventManager();
+      spyOn(eventManager, 'fireEvent');
+      
       pacman.playDiesAnimation();
       game.tick();
       game.tick();
+      expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_PACMAN_DIES_ANIMATION_STARTED});
       expect(ghost.isVisible()).toBeFalsy();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_1');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_1');
       game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_1');
+      game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_2');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_2');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_2');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_3');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_3');
       game.tick();
@@ -855,9 +865,15 @@ describe("When Pacman touches a ghost", function () {
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_4');
       game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_4');
+      game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_5');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_5');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_5');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_6');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_6');
       game.tick();
@@ -867,6 +883,10 @@ describe("When Pacman touches a ghost", function () {
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_7');
       game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_7');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_8');
+      game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_8');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_8');
@@ -875,9 +895,19 @@ describe("When Pacman touches a ghost", function () {
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_9');
       game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_9');
+      game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_10');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_10');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_10');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_11');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_11');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_11');
       game.tick();
       expect(pacman.getCurrentFrame()).toEqual('pacman_dies_11');
       game.tick();

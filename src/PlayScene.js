@@ -22,7 +22,7 @@ function PlayScene(game, maps) {
   
   this.setGhostScoreValue(200);
   this._pointsMessage = new PointsMessage(this);
-  this._pacmanDiesPause = new PacmanDiesPause(this);
+  this._pacmanDiesPause = new PacmanDiesPause(this, game);
 }
 
 PlayScene.prototype.getX = function () {

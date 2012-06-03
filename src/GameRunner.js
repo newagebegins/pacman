@@ -9,7 +9,10 @@ function GameRunner() {
   this._keyboard = new Keyboard(this._game);
   
   this._game.getEventManager().addSubscriber(SoundManager,
-    [EVENT_PELLET_EATEN, EVENT_POWER_PELLET_EATEN, EVENT_GHOST_EATEN]);
+    [EVENT_PELLET_EATEN,
+     EVENT_POWER_PELLET_EATEN,
+     EVENT_GHOST_EATEN,
+     EVENT_PACMAN_DIES_ANIMATION_STARTED]);
 }
 
 GameRunner.prototype.run = function () {

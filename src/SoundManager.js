@@ -4,6 +4,7 @@ var SoundManager = (function() {
     pellet2: null,
     powerpellet: null,
     eatghost: null,
+    pacman_dies: null,
   };
   
   for (var i in sounds) {
@@ -21,6 +22,9 @@ var SoundManager = (function() {
       }
       else if (event.name == EVENT_GHOST_EATEN) {
         sounds.eatghost.play();
+      }
+      else if (event.name == EVENT_PACMAN_DIES_ANIMATION_STARTED) {
+        sounds.pacman_dies.play();
       }
     }
   };
