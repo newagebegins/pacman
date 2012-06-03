@@ -45,7 +45,8 @@ Ghost.prototype.isVisible = function () {
 
 Ghost.prototype.tick = function () {
   if (this._scene.getReadyMessage().isVisible() ||
-      this._scene.getPointsMessage().isVisible()) {
+      this._scene.getPointsMessage().isVisible() ||
+      this._scene.getPacmanDiesPause().isActive()) {
     return;
   }
   

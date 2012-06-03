@@ -128,15 +128,7 @@ Pacman.prototype.handleCollisionsWithGhosts = function () {
     var ghost = ghosts[i];
     if (this._sprite.collidedWith(ghost)) {
       if (ghost.getState() == GHOST_STATE_NORMAL) {
-        if (this._livesCount == 0) {
-          this._game.setScene(new StartupScene(this._game));
-          return;
-        }
-        this._livesCount--;
-        this._scene.getReadyMessage().show();
-        this.placeToStartPosition();
-        this._frame = 0;
-        this._scene.placeGhostsToStartPositions();
+        this._scene.getPacmanDiesPause().activate();
         return;
       }
       else if (ghost.getState() == GHOST_STATE_VULNERABLE) {
