@@ -805,6 +805,7 @@ describe("When Pacman touches a ghost", function () {
     pacman.requestNewDirection(DIRECTION_RIGHT);
     // remove from start position
     pacman.setPosition(new Position(TILE_SIZE * 2, TILE_SIZE));
+    pacman.skipDiesAnimation();
 
     ghost = scene.getGhosts()[0];
     ghost.setCurrentSpeed(0);
@@ -813,22 +814,67 @@ describe("When Pacman touches a ghost", function () {
   });
     
   describe("and ghost is not vulnerable", function () {
-    it("Pacman should die", function () {
-      // Pacman and Ghosts should stay still for a certain amount of time.
+    it("Pacman should stay still for a certain amount of time", function () {
       scene.getPacmanDiesPause().setDuration(2);
       game.tick();
       var pacmanInitialPosition = pacman.getPosition();
+      game.tick();
+      expect(pacman.getPosition()).toEqual(pacmanInitialPosition);
+      game.tick();
+      expect(pacman.getPosition()).toEqual(pacmanInitialPosition);
+    });
+    
+    it("Ghosts should stay still for a certain amount of time", function () {
+      scene.getPacmanDiesPause().setDuration(2);
+      game.tick();
       var ghostInitialPosition = ghost.getPosition();
       game.tick();
-      expect(pacman.getPosition()).toEqual(pacmanInitialPosition);
       expect(ghost.getPosition()).toEqual(ghostInitialPosition);
       game.tick();
-      expect(pacman.getPosition()).toEqual(pacmanInitialPosition);
       expect(ghost.getPosition()).toEqual(ghostInitialPosition);
+    });
+    
+    it("Pacman Dies animation should be played", function () {
+      pacman.playDiesAnimation();
       game.tick();
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_1');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_2');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_3');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_4');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_5');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_6');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_7');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_8');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_9');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_10');
+      game.tick();
+      expect(pacman.getCurrentFrame()).toEqual('pacman_dies_11');
       
-      // Pacman and Ghosts should be placed on their start positions.
+      game.tick();
+      expect(pacman.getDeathFrame()).toEqual(0);
+    });
+    
+    it("Pacman should be placed on its start position", function () {
+      expect(pacman.getPosition()).not.toEqual(pacman.getStartPosition());
+      game.tick();
+      game.tick();
       expect(pacman.getPosition()).toEqual(pacman.getStartPosition());
+    });
+    
+    it("Ghosts should be placed on their start positions", function () {
+      expect(ghost.getPosition()).not.toEqual(ghost.getStartPosition());
+      game.tick();
+      game.tick();
       expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
     });
     

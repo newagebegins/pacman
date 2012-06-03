@@ -1,6 +1,7 @@
 var EVENT_PELLET_EATEN = 'EVENT_PELLET_EATEN';
 var EVENT_POWER_PELLET_EATEN = 'EVENT_POWER_PELLET_EATEN';
 var EVENT_GHOST_EATEN = 'EVENT_GHOST_EATEN';
+var PACMAN_DIES_FRAMES_COUNT = 11;
 
 function Pacman(scene, game) {
   this._scene = scene;
@@ -11,6 +12,9 @@ function Pacman(scene, game) {
   
   this._frames = [1,2,3,2];
   this._frame = 0;
+  
+  this._deathFrame = 0;
+  this._playDiesAnimation = true;
   
   this._livesCount = 2;
   this._eatenPelletSound = 'pellet1';
@@ -151,9 +155,48 @@ Pacman.prototype.draw = function (ctx) {
 };
 
 Pacman.prototype.getCurrentFrame = function () {
-  var index = this._frames[this._frame];
-  var direction = index > 1 ? this.getDirection() : '';
-  return 'pacman_' + index + direction;
+  if (this._strategy instanceof PacmanDiesStrategy) {
+    return 'pacman_dies_' + this._deathFrame;
+  }
+  else {
+    var index = this._frames[this._frame];
+    var direction = index > 1 ? this.getDirection() : '';
+    return 'pacman_' + index + direction;
+  }
+};
+
+Pacman.prototype.getDeathFrame = function () {
+  return this._deathFrame;
+};
+
+Pacman.prototype.advanceDeathFrame = function () {
+  this._deathFrame++;
+};
+
+Pacman.prototype.skipDiesAnimation = function () {
+  this._playDiesAnimation = false;
+};
+
+Pacman.prototype.playDiesAnimation = function () {
+  this._playDiesAnimation = true;
+};
+
+Pacman.prototype.shouldSkipDiesAnimation = function () {
+  return !this._playDiesAnimation;
+};
+
+Pacman.prototype.diesAnimationCompleted = function () {
+  if (this._livesCount == 0) {
+      this._game.setScene(new StartupScene(this._game));
+    return;
+  }
+  this.setStrategy(new PacmanPlaySceneStrategy(this, this._scene));
+  this._livesCount--;
+  this._scene.getReadyMessage().show();
+  this.placeToStartPosition();
+  this._frame = 0;
+  this._deathFrame = 0;
+  this._scene.placeGhostsToStartPositions();
 };
 
 

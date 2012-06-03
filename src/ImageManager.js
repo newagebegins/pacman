@@ -25,6 +25,18 @@ var ImageManager = (function() {
     pacman_2d: null,
     pacman_3d: null,
     
+    pacman_dies_1: null,
+    pacman_dies_2: null,
+    pacman_dies_3: null,
+    pacman_dies_4: null,
+    pacman_dies_5: null,
+    pacman_dies_6: null,
+    pacman_dies_7: null,
+    pacman_dies_8: null,
+    pacman_dies_9: null,
+    pacman_dies_10: null,
+    pacman_dies_11: null,
+    
     blinky_1: null,
     blinky_2: null,
     

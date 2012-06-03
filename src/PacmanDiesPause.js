@@ -17,16 +17,7 @@ PacmanDiesPause.prototype.tick = function () {
   this._timer++;
   if (this._timer > this._duration) {
     this._active = false;
-    
-    if (this._pacman._livesCount == 0) {
-      this._pacman._game.setScene(new StartupScene(this._pacman._game));
-      return;
-    }
-    this._pacman._livesCount--;
-    this._pacman._scene.getReadyMessage().show();
-    this._pacman.placeToStartPosition();
-    this._pacman._frame = 0;
-    this._pacman._scene.placeGhostsToStartPositions();
+    this._pacman.setStrategy(new PacmanDiesStrategy(this._pacman));
   }
 };
 
