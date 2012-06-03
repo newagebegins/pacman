@@ -17,6 +17,7 @@ PacmanDiesPause.prototype.tick = function () {
   this._timer++;
   if (this._timer > this._duration) {
     this._active = false;
+    this._scene.hideGhosts();
     this._pacman.setStrategy(new PacmanDiesStrategy(this._pacman));
   }
 };
