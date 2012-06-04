@@ -13,7 +13,8 @@ function GameRunner() {
      EVENT_POWER_PELLET_EATEN,
      EVENT_GHOST_EATEN,
      EVENT_PACMAN_DIES_ANIMATION_STARTED,
-     EVENT_PLAYSCENE_READY]);
+     EVENT_PLAYSCENE_READY,
+     EVENT_CHERRY_EATEN]);
 }
 
 GameRunner.prototype.run = function () {

@@ -956,6 +956,14 @@ describe("When Pacman touches a ghost", function () {
       expect(ghost.getPosition()).toEqual(ghost.getStartPosition());
     });
     
+    it("Cherry should be hidde", function () {
+      var cherry = scene.getCherry();
+      cherry.appear();
+      game.tick();
+      game.tick();
+      expect(cherry.isVisible()).toBeFalsy();
+    });
+    
     it("Ready message should be visible", function () {
       expect(scene.getReadyMessage().isVisible()).toBeFalsy();
       game.tick();
@@ -1536,5 +1544,150 @@ describe("Event Manager", function () {
     expect(subscriber2.notify).toHaveBeenCalledWith(EVENT_1);
     expect(subscriber1.notify).not.toHaveBeenCalledWith(EVENT_2);
     expect(subscriber2.notify).toHaveBeenCalledWith(EVENT_2);
+  });
+});
+
+describe("Cherry", function () {
+  var map = ['######',
+             'C#   #',
+             '######'];
+  var game, scene, cherry, pacman;
+  
+  beforeEach(function () {
+    game = new Game();
+    scene = new PlayScene(game);
+    game.setScene(scene);
+    scene.getReadyMessage().hide();
+    scene.loadMap(map);
+    cherry = scene.getCherry();
+    
+    pacman = scene.getPacman();
+    // Put Pacman in a closed room to protect Cherry from being eaten.
+    pacman.setPosition({x: TILE_SIZE * 2, y: TILE_SIZE});
+  });
+  
+  it("should appear after certain time intervals", function () {
+    cherry.setAppearanceInterval(3);
+    
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+    
+    cherry.hide();
+    
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+  });
+  
+  it("should be visible for a certain amount of time", function () {
+    cherry.setAppearanceInterval(2);
+    cherry.setVisibilityDuration(3);
+    
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeFalsy();
+    game.tick();
+    expect(cherry.isVisible()).toBeTruthy();
+  });
+  
+  it("should appear on the Pacman's start position", function () {
+    expect(cherry.getPosition()).toEqual(scene.getPacman().getStartPosition());
+  });
+});
+
+describe("When Pacman touches Cherry", function () {
+  var map = ['###',
+             ' C ',
+             '###'];
+  var game, scene, cherry, pacman;
+  
+  beforeEach(function () {
+    game = new Game();
+    scene = new PlayScene(game);
+    game.setScene(scene);
+    scene.getReadyMessage().hide();
+    scene.loadMap(map);
+    
+    cherry = scene.getCherry();
+    cherry.appear();
+    
+    pacman = scene.getPacman();
+    pacman.setSpeed(TILE_SIZE);
+    pacman.setPosition({x: 0, y: TILE_SIZE});
+    pacman.requestNewDirection(DIRECTION_RIGHT);
+  });
+  
+  it("Cherry should know that it has been eaten", function () {
+    expect(cherry.isEaten()).toBeFalsy();
+    game.tick();
+    expect(cherry.isEaten()).toBeTruthy();
+  });
+  
+  it("should remain visible for a certain amount of time", function () {
+    cherry.setEatenVisibilityDuation(3);
+    
+    expect(cherry.isVisible()).toBeTruthy();
+    expect(cherry.isEaten()).toBeFalsy();
+    
+    game.tick();
+    
+    expect(cherry.isEaten()).toBeTruthy();
+    expect(cherry.isVisible()).toBeTruthy();
+    
+    game.tick();
+    
+    expect(cherry.isVisible()).toBeTruthy();
+    
+    game.tick();
+    
+    expect(cherry.isVisible()).toBeFalsy();
+    expect(cherry.isEaten()).toBeFalsy();
+  });
+  
+  it("Score should increase", function () {
+    expect(scene.getScore()).toEqual(0);
+    game.tick();
+    expect(scene.getScore()).toEqual(CHERRY_VALUE);
+  });
+  
+  it("EVENT_CHERRY_EATEN should be fired", function () {
+    var eventManager = game.getEventManager();
+    spyOn(eventManager, 'fireEvent');
+    game.tick();
+    expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_CHERRY_EATEN});
+  });
+  
+  describe("and Cherry is already eaten", function () {
+    it("nothing happens", function () {
+      // Eat Cherry, then place Pacman back and try to eat it again.
+      // Score should increase only once.
+      game.tick();
+      expect(scene.getScore()).toEqual(CHERRY_VALUE);
+      
+      pacman.setPosition({x: 0, y: TILE_SIZE});
+      game.tick();
+      expect(scene.getScore()).toEqual(CHERRY_VALUE);
+    });
   });
 });

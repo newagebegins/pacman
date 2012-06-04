@@ -10,6 +10,8 @@ function PlayScene(game, maps) {
   this._readyMessage.setVisibilityDuration(READY_MESSAGE_DURATION_LONG);
   this._readyMessage.show();
   
+  this._cherry = new Cherry(this);
+  
   this._pacman = new Pacman(this, game);
   this._pacman.setStrategy(new PacmanPlaySceneStrategy(this._pacman, this));
   this._pacman.setSpeed(4);
@@ -51,6 +53,8 @@ PlayScene.prototype.tick = function () {
       this._pellets[pellet].tick();
     }
   }
+  
+  this._cherry.tick();
 };
 
 PlayScene.prototype.draw = function (ctx) {
@@ -62,6 +66,7 @@ PlayScene.prototype.draw = function (ctx) {
     this._pellets[pellet].draw(ctx);
   }
   
+  this._cherry.draw(ctx);
   this._pacman.draw(ctx);
   
   for (var ghost in this._ghosts) {
@@ -149,6 +154,8 @@ PlayScene.prototype.loadMap = function (map) {
         this._pacman.setStartPosition(position);
         this._pacman.setPosition(position);
         this._pacman.setFrame(0);
+        
+        this._cherry.setPosition(position);
       }
       else if (tile == '1' || tile == '2' || tile == '3' || tile == '4') {
         var name;
@@ -386,6 +393,10 @@ PlayScene.prototype.showGhosts = function () {
   }
 };
 
+PlayScene.prototype.getCherry = function () {
+  return this._cherry;
+};
+
 PlayScene.prototype._getMapForCurrentLevel = function () {
   return this._maps[this._currentLevel - 1];
 };
@@ -514,4 +525,10 @@ PlayScene.prototype.getWallAtTile = function (col, row) {
     }
   }
   return null;
+};
+
+PlayScene.prototype.isPause = function () {
+  return this._readyMessage.isVisible() ||
+    this._pointsMessage.isVisible() ||
+    this._pacmanDiesPause.isActive();
 };

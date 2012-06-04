@@ -61,7 +61,9 @@ var ImageManager = (function() {
     eyes_d: null,
     
     pellet: null,
-    power_pellet: null
+    power_pellet: null,
+    
+    cherry: null
   };
   
   for (var i in images) {

@@ -1,6 +1,7 @@
 var EVENT_PELLET_EATEN = 'EVENT_PELLET_EATEN';
 var EVENT_POWER_PELLET_EATEN = 'EVENT_POWER_PELLET_EATEN';
 var EVENT_GHOST_EATEN = 'EVENT_GHOST_EATEN';
+var EVENT_CHERRY_EATEN = 'EVENT_CHERRY_EATEN';
 var EVENT_PACMAN_DIES_ANIMATION_STARTED = 'EVENT_PACMAN_DIES_ANIMATION_STARTED';
 
 function Pacman(scene, game) {
@@ -145,6 +146,18 @@ Pacman.prototype.handleCollisionsWithGhosts = function () {
   }
 };
 
+Pacman.prototype.handleCollisionsWithCherry = function () {
+  var cherry = this._scene.getCherry();
+  if (!cherry.isVisible() || cherry.isEaten()) {
+    return;
+  }
+  if (this._sprite.collidedWith(cherry)) {
+    cherry.eat();
+    this._scene.increaseScore(CHERRY_VALUE);
+    this._game.getEventManager().fireEvent({'name': EVENT_CHERRY_EATEN});
+  }
+};
+
 Pacman.prototype.draw = function (ctx) {
   if (!this._visible) {
     return;
@@ -203,6 +216,7 @@ Pacman.prototype.diesAnimationCompleted = function () {
   this._livesCount--;
   this._scene.getReadyMessage().setVisibilityDuration(READY_MESSAGE_DURATION_SHORT);
   this._scene.getReadyMessage().show();
+  this._scene.getCherry().hide();
   this._scene.showGhosts();
   this.placeToStartPosition();
   this._frame = 0;

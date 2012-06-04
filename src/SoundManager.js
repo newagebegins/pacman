@@ -5,7 +5,8 @@ var SoundManager = (function() {
     powerpellet: null,
     eatghost: null,
     pacman_dies: null,
-    intro: null
+    intro: null,
+    eatfruit: null
   };
   
   for (var i in sounds) {
@@ -29,6 +30,9 @@ var SoundManager = (function() {
       }
       else if (event.name == EVENT_PLAYSCENE_READY) {
         sounds.intro.play();
+      }
+      else if (event.name == EVENT_CHERRY_EATEN) {
+        sounds.eatfruit.play();
       }
     }
   };

@@ -4,9 +4,7 @@ function PacmanPlaySceneStrategy(pacman, scene) {
 }
 
 PacmanPlaySceneStrategy.prototype.tick = function () {
-  if (this._scene.getReadyMessage().isVisible() ||
-      this._scene.getPointsMessage().isVisible() ||
-      this._scene.getPacmanDiesPause().isActive()) {
+  if (this._scene.isPause()) {
     return;
   }
   
@@ -16,4 +14,5 @@ PacmanPlaySceneStrategy.prototype.tick = function () {
   this._pacman.handleCollisionsWithWalls();
   this._pacman.handleCollisionsWithPellets();
   this._pacman.handleCollisionsWithGhosts();
+  this._pacman.handleCollisionsWithCherry();
 };
