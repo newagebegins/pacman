@@ -185,6 +185,10 @@ describe("When Play scene is just started", function () {
     game.setScene(playScene);
   });
   
+  it("Ready message should be visible for a long time (while intro music is played)", function () {
+    expect(playScene.getReadyMessage().getTimeToHide()).toEqual(READY_MESSAGE_DURATION_LONG);
+  });
+  
   it("Ready message should be visible for a certain amount of time", function () {
     var VISIBILITY_DURATION = 3;
     var readyMessage = playScene.getReadyMessage();
@@ -949,6 +953,7 @@ describe("When Pacman touches a ghost", function () {
       game.tick();
       game.tick();
       expect(scene.getReadyMessage().isVisible()).toBeTruthy();
+      expect(scene.getReadyMessage().getTimeToHide()).toEqual(READY_MESSAGE_DURATION_SHORT);
     });
     
     it("Pacman's mouth should be closed", function () {

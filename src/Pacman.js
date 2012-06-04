@@ -201,6 +201,7 @@ Pacman.prototype.diesAnimationCompleted = function () {
   }
   this.setStrategy(new PacmanPlaySceneStrategy(this, this._scene));
   this._livesCount--;
+  this._scene.getReadyMessage().setVisibilityDuration(READY_MESSAGE_DURATION_SHORT);
   this._scene.getReadyMessage().show();
   this._scene.showGhosts();
   this.placeToStartPosition();

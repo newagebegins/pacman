@@ -1,3 +1,6 @@
+var READY_MESSAGE_DURATION_SHORT = 50;
+var READY_MESSAGE_DURATION_LONG = 100;
+
 function ReadyMessage() {}
 
 ReadyMessage.prototype.setVisibilityDuration = function (duration) {

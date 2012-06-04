@@ -7,7 +7,7 @@ function PlayScene(game, maps) {
   this._maps = maps || this._getDefaultMaps();
   
   this._readyMessage = new ReadyMessage();
-  this._readyMessage.setVisibilityDuration(100);
+  this._readyMessage.setVisibilityDuration(READY_MESSAGE_DURATION_LONG);
   this._readyMessage.show();
   
   this._pacman = new Pacman(this, game);
