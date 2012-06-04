@@ -1,11 +1,13 @@
 var TILE_SIZE = 16;
 
+var EVENT_PLAYSCENE_READY = 'EVENT_PLAYSCENE_READY';
+
 function PlayScene(game, maps) {
   this._game = game;
   this._maps = maps || this._getDefaultMaps();
   
   this._readyMessage = new ReadyMessage();
-  this._readyMessage.setVisibilityDuration(50);
+  this._readyMessage.setVisibilityDuration(100);
   this._readyMessage.show();
   
   this._pacman = new Pacman(this, game);
@@ -23,6 +25,7 @@ function PlayScene(game, maps) {
   this.setGhostScoreValue(200);
   this._pointsMessage = new PointsMessage(this);
   this._pacmanDiesPause = new PacmanDiesPause(this, game);
+  this._game.getEventManager().fireEvent({'name': EVENT_PLAYSCENE_READY});
 }
 
 PlayScene.prototype.getX = function () {

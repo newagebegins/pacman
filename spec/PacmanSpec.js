@@ -243,6 +243,17 @@ describe("When Play scene is just started", function () {
   });
 });
 
+describe("When Play scene is started", function () {
+  it("EVENT_PLAYSCENE_READY should be fired", function () {
+    var game = new Game();
+    var eventManager = game.getEventManager();
+    spyOn(eventManager, 'fireEvent');
+    var playScene = new PlayScene(game);
+    game.setScene(playScene);
+    expect(eventManager.fireEvent).toHaveBeenCalledWith({'name': EVENT_PLAYSCENE_READY});
+  });
+});
+
 describe("When on Play scene and Ready message is visible", function () {
   var map = ['###########',
              '#C 12     #',
