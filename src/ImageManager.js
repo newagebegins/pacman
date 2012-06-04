@@ -36,6 +36,7 @@ var ImageManager = (function() {
     pacman_dies_9: null,
     pacman_dies_10: null,
     pacman_dies_11: null,
+    pacman_dies_12: null,
     
     blinky_1: null,
     blinky_2: null,
