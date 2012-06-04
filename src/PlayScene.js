@@ -62,11 +62,11 @@ PlayScene.prototype.draw = function (ctx) {
     this._pellets[pellet].draw(ctx);
   }
   
+  this._pacman.draw(ctx);
+  
   for (var ghost in this._ghosts) {
     this._ghosts[ghost].draw(ctx);
   }
-  
-  this._pacman.draw(ctx);
   
   this._gate.draw(ctx);
   this._drawScore(ctx);
