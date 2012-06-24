@@ -10,7 +10,7 @@ var SoundManager = (function() {
   };
   
   for (var i in sounds) {
-    var snd = new Audio("sounds/" + i + ".wav");
+    var snd = new Audio("sounds/" + i + ".ogg");
     sounds[i] = snd;
   }
   

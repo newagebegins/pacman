@@ -4,7 +4,6 @@ var CANVAS_HEIGHT = 484;
 
 function GameRunner() {
   this._ctx = this._createCanvasContext();
-  this._fpsCounter = new FPSCounter();
   this._game = new Game();
   this._keyboard = new Keyboard(this._game);
   
@@ -24,21 +23,17 @@ GameRunner.prototype.run = function () {
 
 GameRunner.prototype._createCanvasContext = function () {
   var CANVAS_ID = 'canvas';
-  $('<canvas id="' + CANVAS_ID + '" width="' + CANVAS_WIDTH + '" height="' + CANVAS_HEIGHT + '"></canvas>').appendTo('body');
+  $('<canvas id="' + CANVAS_ID + '" width="' + CANVAS_WIDTH + '" height="' + CANVAS_HEIGHT + '"></canvas>').appendTo('#main');
   var canvas = document.getElementById(CANVAS_ID);
   return canvas.getContext('2d');
 };
 
 GameRunner.prototype._gameLoop = function () {
-  this._fpsCounter.begin();
-
   this._keyboard.handleKeypresses();
   this._game.tick();
   
   this._clearCanvas();
   this._game.draw(this._ctx);
-
-  this._fpsCounter.end();
 };
 
 GameRunner.prototype._clearCanvas = function () {
